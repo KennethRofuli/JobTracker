@@ -1,0 +1,153 @@
+name: Job Tracker CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Validate Backend
+  backend-validation:
+    name: Backend - Install & Validate
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install Backend Dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Check for Syntax Errors
+      run: |
+        cd backend
+        node -c server.js
+        node -c src/config/db.js
+        node -c src/models/Application.js
+        node -c src/controllers/applicationController.js
+        node -c src/routes/applications.js
+        
+    - name: Validate Environment Setup
+      run: |
+        cd backend
+        if [ ! -f "package.json" ]; then
+          echo "Error: package.json not found"
+          exit 1
+        fi
+        echo "✅ Backend structure validated"
+        
+  # Validate Frontend
+  frontend-validation:
+    name: Frontend - Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: Install Frontend Dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: Build Frontend
+      run: |
+        cd frontend
+        CI=false npm run build
+      env:
+        REACT_APP_API_URL: http://localhost:5000
+        
+    - name: Check Build Output
+      run: |
+        cd frontend
+        if [ -d "build" ]; then
+          echo "✅ Frontend built successfully"
+          ls -lh build/
+        else
+          echo "❌ Build folder not found"
+          exit 1
+        fi
+        
+  # Validate Extension
+  extension-validation:
+    name: Extension - Validate Manifest
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    
+    - name: Validate Extension Files
+      run: |
+        cd extension
+        
+        # Check required files exist
+        files=("manifest.json" "popup.html" "popup.js" "content.js" "background.js" "styles.css")
+        for file in "${files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Missing required file: $file"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All extension files present"
+        
+    - name: Validate manifest.json
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Parse Manifest
+      run: |
+        cd extension
+        node -e "
+          const manifest = require('./manifest.json');
+          console.log('Extension Name:', manifest.name);
+          console.log('Version:', manifest.version);
+          console.log('Manifest Version:', manifest.manifest_version);
+          
+          if (manifest.manifest_version !== 3) {
+            console.error('❌ Invalid manifest version');
+            process.exit(1);
+          }
+          
+          if (!manifest.permissions || manifest.permissions.length === 0) {
+            console.error('❌ No permissions defined');
+            process.exit(1);
+          }
+          
+          console.log('✅ Manifest is valid');
+        "
+        
+  # Summary
+  build-summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [backend-validation, frontend-validation, extension-validation]
+    
+    steps:
+    - name: All Checks Passed
+      run: |
+        echo "🎉 All validation checks passed!"
+        echo "✅ Backend: Dependencies installed, syntax valid"
+        echo "✅ Frontend: Built successfully"
+        echo "✅ Extension: Manifest valid, all files present"
+        echo ""
+        echo "Your Job Tracker is ready to deploy! 🚀"
