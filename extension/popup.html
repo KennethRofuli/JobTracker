@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>📋 Add Job Application</h2>
+    
+    <form id="jobForm">
+      <div class="form-group">
+        <label>Company Name *</label>
+        <input type="text" id="company" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Job Title *</label>
+        <input type="text" id="jobTitle" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="location" placeholder="e.g. Toronto, ON">
+      </div>
+      
+      <div class="form-group">
+        <label>Job URL</label>
+        <input type="text" id="url" placeholder="Job posting link">
+      </div>
+      
+      <div class="form-group">
+        <label>Source</label>
+        <select id="source">
+          <option value="Manual">Manual</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Indeed">Indeed</option>
+          <option value="Glassdoor">Glassdoor</option>
+          <option value="OnlineJobs.ph">OnlineJobs.ph</option>
+          <option value="Email">Email</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Status</label>
+        <select id="status">
+          <option value="Applied">Applied</option>
+          <option value="Interviewing">Interviewing</option>
+          <option value="Offered">Offered</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Accepted">Accepted</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn-primary">Save Application</button>
+    </form>
+    
+    <div id="message" class="message"></div>
+    
+    <button id="autoCapture" class="btn-secondary">
+      🎯 Auto-Capture from Page
+    </button>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
