@@ -8,34 +8,34 @@ body {
 }
 
 .container {
-  padding: 16px;
+  padding: 12px;
   min-height: 100%;
 }
 
 h2 {
-  margin: 0 0 16px 0;
-  font-size: 18px;
+  margin: 0 0 10px 0;
+  font-size: 16px;
   color: #333;
 }
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 label {
   display: block;
-  margin-bottom: 4px;
-  font-size: 13px;
+  margin-bottom: 2px;
+  font-size: 12px;
   font-weight: 500;
   color: #555;
 }
 
 input, select {
   width: 100%;
-  padding: 8px;
+  padding: 6px 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   box-sizing: border-box;
 }
 
@@ -46,13 +46,13 @@ input:focus, select:focus {
 
 .btn-primary, .btn-secondary {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .btn-primary {
@@ -72,14 +72,15 @@ input:focus, select:focus {
 .btn-secondary:hover {
   background: #e0e0e0;
 }
+
 .manual-login-toggle {
-  margin-top: 1rem;
+  margin-top: 8px;
   text-align: center;
 }
 
 .toggle-link {
   color: #666;
-  font-size: 0.75rem;
+  font-size: 11px;
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s;
@@ -89,11 +90,12 @@ input:focus, select:focus {
   color: #333;
   text-decoration: underline;
 }
+
 .message {
-  padding: 8px;
-  margin: 12px 0;
+  padding: 6px;
+  margin: 8px 0;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
 }
 
