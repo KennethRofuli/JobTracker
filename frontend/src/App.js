@@ -17,6 +17,8 @@ function App() {
   const [dateFilter, setDateFilter] = useState('all');
   const [sortBy, setSortBy] = useState('date');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(25);
   const [user, setUser] = useState(null);
 
   // Check authentication and fetch user data
@@ -208,6 +210,17 @@ function App() {
     return filtered;
   }, [applications, searchTerm, filterStatus, dateFilter, sortBy, sortOrder]);
 
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedApplications.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentApplications = filteredAndSortedApplications.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterStatus, dateFilter, sortBy, sortOrder]);
+
   if (!user) {
     return <div className="loading">Loading...</div>;
   }
@@ -292,8 +305,6 @@ function App() {
             <option value="date-asc">📅 Oldest First</option>
             <option value="company-asc">🏢 Company A-Z</option>
             <option value="company-desc">🏢 Company Z-A</option>
-            <option value="status-asc">📊 Status A-Z</option>
-            <option value="status-desc">📊 Status Z-A</option>
           </select>
 
           <button onClick={exportToCSV} className="export-btn" title="Export to CSV">
@@ -310,13 +321,38 @@ function App() {
         ) : (
           <>
             <div className="results-count">
-              Showing {filteredAndSortedApplications.length} of {applications.length} applications
+              Showing {startIndex + 1}-{Math.min(endIndex, filteredAndSortedApplications.length)} of {filteredAndSortedApplications.length} applications
+              {filteredAndSortedApplications.length !== applications.length && ` (filtered from ${applications.length} total)`}
             </div>
             <ApplicationTable
-              applications={filteredAndSortedApplications}
+              applications={currentApplications}
               onDelete={deleteApplication}
               onUpdateStatus={updateStatus}
             />
+            
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  ← Previous
+                </button>
+                
+                <div className="pagination-info">
+                  Page {currentPage} of {totalPages}
+                </div>
+                
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
