@@ -19,6 +19,9 @@ const authRoutes = require('./src/routes/auth');
 
 const app = express();
 
+// Trust first proxy (required for Render, Heroku, etc.)
+app.set('trust proxy', 1);
+
 connectDB();
 
 // Security Middleware
