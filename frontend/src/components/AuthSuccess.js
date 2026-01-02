@@ -19,10 +19,12 @@ function AuthSuccess() {
       
       // Try to send token to extension if installed
       try {
+        // eslint-disable-next-line no-undef
         chrome.runtime.sendMessage(
           'lbeihaoanhokdoneifjndckafifjiied',
           { action: 'setToken', token: token },
           (response) => {
+            // eslint-disable-next-line no-undef
             if (chrome.runtime.lastError) {
               console.log('Extension not installed or not reachable');
             } else {
