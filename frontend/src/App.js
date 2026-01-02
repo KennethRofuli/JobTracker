@@ -108,6 +108,21 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    
+    // Notify extension to logout as well
+    try {
+      // eslint-disable-next-line no-undef
+      chrome.runtime.sendMessage(
+        'lbeihaoanhokdoneifjndckafifjiied',
+        { action: 'logout' },
+        (response) => {
+          console.log('Logout signal sent to extension');
+        }
+      );
+    } catch (e) {
+      console.log('Chrome extension API not available');
+    }
+    
     navigate('/login');
   };
 

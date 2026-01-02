@@ -16,6 +16,23 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
     });
     return true; // Keep the message channel open for sendResponse
   }
+  
+  if (request.action === 'logout') {
+    // Clear token from extension
+    chrome.storage.local.remove('authToken', () => {
+      console.log('Logged out from extension');
+      sendResponse({ success: true });
+      
+      // Show logout notification
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icons/icon48.png',
+        title: 'Logged Out',
+        message: 'You have been logged out of Job Tracker'
+      });
+    });
+    return true;
+  }
 });
 
 // Listen for messages from content script
