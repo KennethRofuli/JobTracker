@@ -9,7 +9,7 @@
     "notifications"
   ],
   "host_permissions": [
-    "http://localhost:5000/*"
+    "https://jobtracker-backend-hqzq.onrender.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

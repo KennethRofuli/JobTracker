@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (token) {
     // Verify token is still valid
     try {
-      const response = await fetch('http://localhost:5000/api/auth/me', {
+      const response = await fetch('https://jobtracker-backend-hqzq.onrender.com/api/auth/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -40,7 +40,7 @@ function showLoggedOut() {
 
 // Login button
 document.getElementById('loginBtn').addEventListener('click', () => {
-  chrome.tabs.create({ url: 'http://localhost:3000/login' });
+  chrome.tabs.create({ url: 'https://job-tracker-seven-lake.vercel.app/login' });
 });
 
 // Save token button
@@ -54,7 +54,7 @@ document.getElementById('saveTokenBtn').addEventListener('click', async () => {
   
   // Verify token
   try {
-    const response = await fetch('http://localhost:5000/api/auth/me', {
+    const response = await fetch('https://jobtracker-backend-hqzq.onrender.com/api/auth/me', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     
@@ -102,7 +102,7 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
   };
   
   try {
-    const response = await fetch('http://localhost:5000/api/applications', {
+    const response = await fetch('https://jobtracker-backend-hqzq.onrender.com/api/applications', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
