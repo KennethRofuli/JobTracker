@@ -130,7 +130,7 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       navigator.clipboard.writeText(token);
-      alert('✅ Token copied! Now paste it into the extension.');
+      alert('✅ Token copied! Use this only if automatic login doesn\'t work in the extension.');
     }
   };
 

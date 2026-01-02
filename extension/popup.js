@@ -43,6 +43,21 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   chrome.tabs.create({ url: 'https://job-tracker-seven-lake.vercel.app/login' });
 });
 
+// Toggle manual login section
+document.getElementById('showManualLogin').addEventListener('click', (e) => {
+  e.preventDefault();
+  const manualSection = document.getElementById('manualLoginSection');
+  const toggleLink = document.getElementById('showManualLogin');
+  
+  if (manualSection.style.display === 'none') {
+    manualSection.style.display = 'block';
+    toggleLink.textContent = 'Hide manual login';
+  } else {
+    manualSection.style.display = 'none';
+    toggleLink.textContent = 'Having trouble? Use manual login';
+  }
+});
+
 // Save token button
 document.getElementById('saveTokenBtn').addEventListener('click', async () => {
   const token = document.getElementById('tokenInput').value.trim();

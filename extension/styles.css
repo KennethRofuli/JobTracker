@@ -69,7 +69,23 @@ input:focus, select:focus {
 .btn-secondary:hover {
   background: #e0e0e0;
 }
+.manual-login-toggle {
+  margin-top: 1rem;
+  text-align: center;
+}
 
+.toggle-link {
+  color: #666;
+  font-size: 0.75rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toggle-link:hover {
+  color: #333;
+  text-decoration: underline;
+}
 .message {
   padding: 8px;
   margin: 12px 0;

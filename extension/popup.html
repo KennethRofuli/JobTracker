@@ -14,8 +14,12 @@
         <p class="auth-message">Please log in to save job applications</p>
         <button id="loginBtn" class="btn-primary">Login with Google</button>
         
-        <div class="token-input-section">
-          <p class="small-text">Or paste your token:</p>
+        <div class="manual-login-toggle">
+          <a href="#" id="showManualLogin" class="toggle-link">Having trouble? Use manual login</a>
+        </div>
+        
+        <div class="token-input-section" id="manualLoginSection" style="display: none;">
+          <p class="small-text">Paste your token from the dashboard:</p>
           <input type="text" id="tokenInput" placeholder="Paste token here">
           <button id="saveTokenBtn" class="btn-secondary">Save Token</button>
         </div>
