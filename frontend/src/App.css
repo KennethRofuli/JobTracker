@@ -59,6 +59,21 @@
   color: #333;
 }
 
+.extension-token-btn {
+  padding: 0.5rem 1rem;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.extension-token-btn:hover {
+  background: #357ae8;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;

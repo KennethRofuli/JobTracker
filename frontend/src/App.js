@@ -111,6 +111,14 @@ function App() {
     navigate('/login');
   };
 
+  const copyTokenForExtension = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigator.clipboard.writeText(token);
+      alert('✅ Token copied! Now paste it into the extension.');
+    }
+  };
+
   // Filter applications
   const filteredApplications = applications.filter(app => {
     const matchesSearch = 
@@ -134,6 +142,9 @@ function App() {
           <div className="user-info">
             {user.picture && <img src={user.picture} alt={user.name} className="user-avatar" />}
             <span className="user-name">{user.name}</span>
+            <button onClick={copyTokenForExtension} className="extension-token-btn" title="Copy token for browser extension">
+              🔑 Extension Token
+            </button>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
         </div>
