@@ -356,6 +356,19 @@ function App() {
           </>
         )}
       </div>
+
+      <footer className="app-footer">
+        <p>Made with ❤️ by Kenneth John Rofuli</p>
+        <div className="footer-links">
+          <a href="https://github.com/KennethRofuli" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <span className="footer-separator">•</span>
+          <a href="https://www.linkedin.com/in/kenneth-john-r-2674522a6" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

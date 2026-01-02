@@ -285,6 +285,44 @@
   font-weight: 500;
 }
 
+/* Footer */
+.app-footer {
+  background: #ffffff;
+  border-top: 1px solid #e8e8e8;
+  padding: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.app-footer p {
+  margin: 0 0 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #0052a3;
+  text-decoration: underline;
+}
+
+.footer-separator {
+  color: #ccc;
+}
+
 .search-input:focus {
   outline: none;
   border-color: #333;
