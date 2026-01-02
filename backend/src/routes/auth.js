@@ -1,11 +1,12 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const { authLimiter } = require('../middleware/rateLimiter');
 const router = express.Router();
 
 // @desc    Auth with Google
 // @route   GET /api/auth/google
-router.get('/google', passport.authenticate('google', { 
+router.get('/google', authLimiter, passport.authenticate('google', { 
     scope: ['profile', 'email'],
     session: false 
 }));
