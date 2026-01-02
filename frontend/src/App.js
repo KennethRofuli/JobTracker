@@ -14,6 +14,9 @@ function App() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
+  const [dateFilter, setDateFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('date');
+  const [sortOrder, setSortOrder] = useState('desc');
   const [user, setUser] = useState(null);
 
   // Check authentication and fetch user data
@@ -134,16 +137,76 @@ function App() {
     }
   };
 
-  // Filter applications
-  const filteredApplications = applications.filter(app => {
-    const matchesSearch = 
-      app.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.job_title.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = filterStatus === 'All' || app.status === filterStatus;
-    
-    return matchesSearch && matchesStatus;
-  });
+  const exportToCSV = () => {
+    if (filteredAndSortedApplications.length === 0) {
+      alert('No applications to export');
+      return;
+    }
+
+    const headers = ['Company', 'Job Title', 'Location', 'Status', 'Source', 'Date Applied', 'URL'];
+    const csvData = filteredAndSortedApplications.map(app => [
+      app.company_name,
+      app.job_title,
+      app.location || '',
+      app.status,
+      app.source,
+      new Date(app.date_applied).toLocaleDateString(),
+      app.url || ''
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `job-applications-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
+  // Filter and sort applications
+  const filteredAndSortedApplications = React.useMemo(() => {
+    let filtered = applications.filter(app => {
+      const matchesSearch = 
+        app.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        app.job_title.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesStatus = filterStatus === 'All' || app.status === filterStatus;
+      
+      // Date filtering
+      let matchesDate = true;
+      if (dateFilter !== 'all') {
+        const appDate = new Date(app.date_applied);
+        const now = new Date();
+        const daysAgo = Math.floor((now - appDate) / (1000 * 60 * 60 * 24));
+        
+        if (dateFilter === '7') matchesDate = daysAgo <= 7;
+        else if (dateFilter === '30') matchesDate = daysAgo <= 30;
+        else if (dateFilter === '90') matchesDate = daysAgo <= 90;
+      }
+      
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+
+    // Sorting
+    filtered.sort((a, b) => {
+      let compareValue = 0;
+      
+      if (sortBy === 'date') {
+        compareValue = new Date(a.date_applied) - new Date(b.date_applied);
+      } else if (sortBy === 'company') {
+        compareValue = a.company_name.localeCompare(b.company_name);
+      } else if (sortBy === 'status') {
+        compareValue = a.status.localeCompare(b.status);
+      }
+      
+      return sortOrder === 'asc' ? compareValue : -compareValue;
+    });
+
+    return filtered;
+  }, [applications, searchTerm, filterStatus, dateFilter, sortBy, sortOrder]);
 
   if (!user) {
     return <div className="loading">Loading...</div>;
@@ -205,6 +268,38 @@ function App() {
             <option value="Accepted">Accepted</option>
           </select>
 
+          <select
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">All Time</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
+
+          <select
+            value={`${sortBy}-${sortOrder}`}
+            onChange={(e) => {
+              const [newSortBy, newSortOrder] = e.target.value.split('-');
+              setSortBy(newSortBy);
+              setSortOrder(newSortOrder);
+            }}
+            className="filter-select"
+          >
+            <option value="date-desc">📅 Newest First</option>
+            <option value="date-asc">📅 Oldest First</option>
+            <option value="company-asc">🏢 Company A-Z</option>
+            <option value="company-desc">🏢 Company Z-A</option>
+            <option value="status-asc">📊 Status A-Z</option>
+            <option value="status-desc">📊 Status Z-A</option>
+          </select>
+
+          <button onClick={exportToCSV} className="export-btn" title="Export to CSV">
+            📥 Export
+          </button>
+
           <button onClick={fetchApplications} className="refresh-btn">
             🔄 Refresh
           </button>
@@ -213,11 +308,16 @@ function App() {
         {loading ? (
           <div className="loading">Loading applications...</div>
         ) : (
-          <ApplicationTable
-            applications={filteredApplications}
-            onDelete={deleteApplication}
-            onUpdateStatus={updateStatus}
-          />
+          <>
+            <div className="results-count">
+              Showing {filteredAndSortedApplications.length} of {applications.length} applications
+            </div>
+            <ApplicationTable
+              applications={filteredAndSortedApplications}
+              onDelete={deleteApplication}
+              onUpdateStatus={updateStatus}
+            />
+          </>
         )}
       </div>
     </div>
