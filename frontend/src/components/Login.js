@@ -9,7 +9,8 @@ function Login() {
 
   const handleGoogleLogin = () => {
     // Redirect to backend Google OAuth
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+    window.location.href = `${apiUrl}/auth/google`;
   };
 
   return (
