@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/auth');
 const {
     getApplications,
     getApplication,
@@ -7,6 +8,9 @@ const {
     updateApplication,
     deleteApplication
 } = require('../controllers/applicationController');
+
+// All routes require authentication
+router.use(authMiddleware);
 
 router.route('/')
     .get(getApplications)

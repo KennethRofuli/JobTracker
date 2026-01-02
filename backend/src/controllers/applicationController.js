@@ -1,12 +1,12 @@
 const Application = require('../models/Application');
 
-// @desc    Get all applications
+// @desc    Get all applications for logged in user
 // @route   GET /api/applications
-// @access  Public
+// @access  Private
 
 exports.getApplications = async (req, res) => {
     try {
-        const applications = await Application.find().sort({ createdAt: -1 });
+        const applications = await Application.find({ userId: req.user._id }).sort({ createdAt: -1 });
         res.json({
             success: true,
             count: applications.length,
@@ -19,11 +19,14 @@ exports.getApplications = async (req, res) => {
 
 // @desc get single application
 // @route GET /api/applications/:id
-// @access Public
+// @access Private
 
 exports.getApplication = async (req, res) => {
   try {
-    const application = await Application.findById(req.params.id);
+    const application = await Application.findOne({ 
+      _id: req.params.id,
+      userId: req.user._id 
+    });
     
     if (!application) {
       return res.status(404).json({
@@ -46,7 +49,7 @@ exports.getApplication = async (req, res) => {
 
 // @desc    Create new application
 // @route   POST /api/applications
-// @access  Public
+// @access  Private
 
 exports.createApplication = async (req, res) => {
     try {
@@ -54,8 +57,9 @@ exports.createApplication = async (req, res) => {
         const normalizedCompany = req.body.company_name?.trim().toLowerCase();
         const normalizedTitle = req.body.job_title?.trim().toLowerCase();
         
-        // Check for duplicate (case-insensitive, trimmed)
+        // Check for duplicate (case-insensitive, trimmed) for this user
         const existingApplication = await Application.findOne({
+            userId: req.user._id,
             company_name: { $regex: new RegExp(`^${normalizedCompany.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
             job_title: { $regex: new RegExp(`^${normalizedTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') }
         });
@@ -68,7 +72,10 @@ exports.createApplication = async (req, res) => {
             });
         }
 
-        const application = await Application.create(req.body);
+        const application = await Application.create({
+            ...req.body,
+            userId: req.user._id
+        });
         res.status(201).json({
             success: true,
             data: application
@@ -91,18 +98,15 @@ exports.createApplication = async (req, res) => {
 
 // @desc    Update application
 // @route   PUT /api/applications/:id
-// @access  Public
+// @access  Private
 
 exports.updateApplication = async (req, res) => {
     try {
-        const application = await Application.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
+        // First find to verify ownership
+        let application = await Application.findOne({
+            _id: req.params.id,
+            userId: req.user._id
+        });
 
         if (!application) {
             return res.status(404).json({
@@ -110,6 +114,16 @@ exports.updateApplication = async (req, res) => {
                 error: 'Application not found'
             });
         }
+
+        // Update the application
+        application = await Application.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
 
         res.json({
             success: true,
@@ -125,11 +139,14 @@ exports.updateApplication = async (req, res) => {
 
 // @desc    Delete application
 // @route   DELETE /api/applications/:id
-// @access  Public
+// @access  Private
 
 exports.deleteApplication = async (req, res) => {
     try {
-        const application = await Application.findByIdAndDelete(req.params.id);
+        const application = await Application.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user._id
+        });
 
         if (!application) {
             return res.status(404).json({

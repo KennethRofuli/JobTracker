@@ -1,6 +1,95 @@
+// Check auth status on load
+document.addEventListener('DOMContentLoaded', async () => {
+  const result = await chrome.storage.local.get(['authToken']);
+  const token = result.authToken;
+  
+  if (token) {
+    // Verify token is still valid
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const user = await response.json();
+        showLoggedIn(user.name);
+      } else {
+        showLoggedOut();
+        chrome.storage.local.remove('authToken');
+      }
+    } catch (error) {
+      showLoggedOut();
+    }
+  } else {
+    showLoggedOut();
+  }
+});
+
+function showLoggedIn(userName) {
+  document.getElementById('loggedOut').style.display = 'none';
+  document.getElementById('loggedIn').style.display = 'block';
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('userName').textContent = userName;
+}
+
+function showLoggedOut() {
+  document.getElementById('loggedOut').style.display = 'block';
+  document.getElementById('loggedIn').style.display = 'none';
+  document.getElementById('formSection').style.display = 'none';
+}
+
+// Login button
+document.getElementById('loginBtn').addEventListener('click', () => {
+  chrome.tabs.create({ url: 'http://localhost:3000/login' });
+});
+
+// Save token button
+document.getElementById('saveTokenBtn').addEventListener('click', async () => {
+  const token = document.getElementById('tokenInput').value.trim();
+  
+  if (!token) {
+    showMessage('Please enter a token', 'error');
+    return;
+  }
+  
+  // Verify token
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (response.ok) {
+      const user = await response.json();
+      await chrome.storage.local.set({ authToken: token });
+      showLoggedIn(user.name);
+      showMessage('✅ Logged in successfully!', 'success');
+      document.getElementById('tokenInput').value = '';
+    } else {
+      showMessage('❌ Invalid token', 'error');
+    }
+  } catch (error) {
+    showMessage('❌ Error: ' + error.message, 'error');
+  }
+});
+
+// Logout button
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await chrome.storage.local.remove('authToken');
+  showLoggedOut();
+  showMessage('Logged out', 'success');
+});
+
 // Form submission - Manual entry
 document.getElementById('jobForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  
+  const result = await chrome.storage.local.get(['authToken']);
+  const token = result.authToken;
+  
+  if (!token) {
+    showMessage('❌ Please log in first', 'error');
+    return;
+  }
   
   const data = {
     company_name: document.getElementById('company').value,
@@ -16,10 +105,18 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
     const response = await fetch('http://localhost:5000/api/applications', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(data)
     });
+    
+    if (response.status === 401) {
+      showMessage('❌ Session expired. Please log in again.', 'error');
+      await chrome.storage.local.remove('authToken');
+      showLoggedOut();
+      return;
+    }
     
     if (response.ok) {
       showMessage('✅ Application saved!', 'success');

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const applicationSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     company_name:{
         type: String,
         required: [true, 'Please add a company name'],
@@ -41,8 +46,9 @@ const applicationSchema = mongoose.Schema({
 });
 
 // Create compound index to prevent duplicates at database level
-// This ensures no two applications can have same company + job title
+// This ensures no two applications can have same company + job title per user
 applicationSchema.index({ 
+    userId: 1,
     company_name: 1, 
     job_title: 1 
 }, { 

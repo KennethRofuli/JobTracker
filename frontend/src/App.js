@@ -1,31 +1,69 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Stats from './components/Stats';
 import ApplicationTable from './components/ApplicationTable';
 
-const API_URL = 'http://localhost:5000/api/applications';
+const API_URL = 'http://localhost:5000/api';
 
 function App() {
+  const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
+  const [user, setUser] = useState(null);
 
-  // Fetch applications on mount
+  // Check authentication and fetch user data
   useEffect(() => {
-    fetchApplications();
-  }, []);
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${API_URL}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(response.data);
+        fetchApplications();
+      } catch (err) {
+        console.error('Auth check failed:', err);
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const fetchApplications = async () => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
     try {
       setLoading(true);
-      const response = await axios.get(API_URL);
+      const response = await axios.get(`${API_URL}/applications`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setApplications(response.data.data);
       setError(null);
     } catch (err) {
-      setError('Failed to load applications. Make sure backend is running on port 5000.');
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+      } else {
+        setError('Failed to load applications. Make sure backend is running on port 5000.');
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -37,8 +75,12 @@ function App() {
       return;
     }
     
+    const token = localStorage.getItem('token');
+    
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_URL}/applications/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setApplications(applications.filter(app => app._id !== id));
     } catch (err) {
       alert('Failed to delete application');
@@ -47,8 +89,14 @@ function App() {
   };
 
   const updateStatus = async (id, newStatus) => {
+    const token = localStorage.getItem('token');
+    
     try {
-      const response = await axios.put(`${API_URL}/${id}`, { status: newStatus });
+      const response = await axios.put(
+        `${API_URL}/applications/${id}`, 
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setApplications(applications.map(app => 
         app._id === id ? response.data.data : app
       ));
@@ -56,6 +104,11 @@ function App() {
       alert('Failed to update status');
       console.error(err);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   // Filter applications
@@ -69,10 +122,21 @@ function App() {
     return matchesSearch && matchesStatus;
   });
 
+  if (!user) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <div className="App">
       <header className="app-header">
-        <h1>📋 Job Tracker Dashboard</h1>
+        <div className="header-content">
+          <h1>📋 Job Tracker Dashboard</h1>
+          <div className="user-info">
+            {user.picture && <img src={user.picture} alt={user.name} className="user-avatar" />}
+            <span className="user-name">{user.name}</span>
+            <button onClick={handleLogout} className="logout-btn">Logout</button>
+          </div>
+        </div>
       </header>
 
       {error && <div className="error-banner">{error}</div>}

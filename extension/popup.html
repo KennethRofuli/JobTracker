@@ -6,60 +6,81 @@
 </head>
 <body>
   <div class="container">
-    <h2>📋 Add Job Application</h2>
+    <h2>📋 Job Tracker</h2>
     
-    <form id="jobForm">
-      <div class="form-group">
-        <label>Company Name *</label>
-        <input type="text" id="company" required>
+    <!-- Auth Status -->
+    <div id="authSection">
+      <div id="loggedOut" class="auth-section">
+        <p class="auth-message">Please log in to save job applications</p>
+        <button id="loginBtn" class="btn-primary">Login with Google</button>
+        
+        <div class="token-input-section">
+          <p class="small-text">Or paste your token:</p>
+          <input type="text" id="tokenInput" placeholder="Paste token here">
+          <button id="saveTokenBtn" class="btn-secondary">Save Token</button>
+        </div>
       </div>
       
-      <div class="form-group">
-        <label>Job Title *</label>
-        <input type="text" id="jobTitle" required>
+      <div id="loggedIn" class="auth-section" style="display: none;">
+        <p class="auth-message">✓ Logged in as <span id="userName"></span></p>
+        <button id="logoutBtn" class="btn-secondary">Logout</button>
       </div>
-      
-      <div class="form-group">
-        <label>Location</label>
-        <input type="text" id="location" placeholder="e.g. Toronto, ON">
-      </div>
-      
-      <div class="form-group">
-        <label>Job URL</label>
-        <input type="text" id="url" placeholder="Job posting link">
-      </div>
-      
-      <div class="form-group">
-        <label>Source</label>
-        <select id="source">
-          <option value="Manual">Manual</option>
-          <option value="LinkedIn">LinkedIn</option>
-          <option value="Indeed">Indeed</option>
-          <option value="Glassdoor">Glassdoor</option>
-          <option value="OnlineJobs.ph">OnlineJobs.ph</option>
-          <option value="Email">Email</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label>Status</label>
-        <select id="status">
-          <option value="Applied">Applied</option>
-          <option value="Interviewing">Interviewing</option>
-          <option value="Offered">Offered</option>
-          <option value="Rejected">Rejected</option>
-          <option value="Accepted">Accepted</option>
-        </select>
-      </div>
-      
-      <button type="submit" class="btn-primary">Save Application</button>
-    </form>
+    </div>
     
-    <div id="message" class="message"></div>
-    
-    <button id="autoCapture" class="btn-secondary">
-      🎯 Auto-Capture from Page
-    </button>
+    <div id="formSection" style="display: none;">
+      <form id="jobForm">
+        <div class="form-group">
+          <label>Company Name *</label>
+          <input type="text" id="company" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Job Title *</label>
+          <input type="text" id="jobTitle" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="location" placeholder="e.g. Toronto, ON">
+        </div>
+        
+        <div class="form-group">
+          <label>Job URL</label>
+          <input type="text" id="url" placeholder="Job posting link">
+        </div>
+        
+        <div class="form-group">
+          <label>Source</label>
+          <select id="source">
+            <option value="Manual">Manual</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Indeed">Indeed</option>
+            <option value="Glassdoor">Glassdoor</option>
+            <option value="OnlineJobs.ph">OnlineJobs.ph</option>
+            <option value="Email">Email</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Status</label>
+          <select id="status">
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Offered">Offered</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn-primary">Save Application</button>
+      </form>
+      
+      <div id="message" class="message"></div>
+      
+      <button id="autoCapture" class="btn-secondary">
+        🎯 Auto-Capture from Page
+      </button>
+    </div>
   </div>
   
   <script src="popup.js"></script>
