@@ -11,6 +11,11 @@
   "host_permissions": [
     "https://jobtracker-backend-hqzq.onrender.com/*"
   ],
+  "externally_connectable": {
+    "matches": [
+      "https://job-tracker-seven-lake.vercel.app/*"
+    ]
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

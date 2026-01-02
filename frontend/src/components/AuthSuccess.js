@@ -16,6 +16,24 @@ function AuthSuccess() {
       // Store token in localStorage
       localStorage.setItem('token', token);
       console.log('Token stored, redirecting to dashboard...');
+      
+      // Try to send token to extension if installed
+      try {
+        chrome.runtime.sendMessage(
+          'lbeihaoanhokdoneifjndckafifjiied',
+          { action: 'setToken', token: token },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              console.log('Extension not installed or not reachable');
+            } else {
+              console.log('Token sent to extension successfully');
+            }
+          }
+        );
+      } catch (e) {
+        console.log('Chrome extension API not available');
+      }
+      
       // Redirect to dashboard
       setTimeout(() => navigate('/'), 100);
     } else {

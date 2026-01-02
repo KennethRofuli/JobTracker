@@ -1,3 +1,23 @@
+// Listen for messages from content script and web app
+chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+  if (request.action === 'setToken' && request.token) {
+    // Save token from web app
+    chrome.storage.local.set({ authToken: request.token }, () => {
+      console.log('Token received from web app and saved');
+      sendResponse({ success: true });
+      
+      // Show success notification
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icons/icon48.png',
+        title: 'Login Successful!',
+        message: 'You are now logged in to Job Tracker'
+      });
+    });
+    return true; // Keep the message channel open for sendResponse
+  }
+});
+
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveApplication') {
