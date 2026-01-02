@@ -358,7 +358,7 @@ function App() {
       </div>
 
       <footer className="app-footer">
-        <p>Made with ❤️ by Kenneth John Rofuli</p>
+        <p>Made by Kenneth John Rofuli</p>
         <div className="footer-links">
           <a href="https://github.com/KennethRofuli" target="_blank" rel="noopener noreferrer">
             GitHub
