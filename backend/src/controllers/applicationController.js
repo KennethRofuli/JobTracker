@@ -57,12 +57,24 @@ exports.createApplication = async (req, res) => {
         const normalizedCompany = req.body.company_name?.trim().toLowerCase();
         const normalizedTitle = req.body.job_title?.trim().toLowerCase();
         
+        console.log('=== CREATE APPLICATION ===');
+        console.log('User ID:', req.user._id);
+        console.log('User Name:', req.user.name);
+        console.log('Job:', normalizedCompany, '-', normalizedTitle);
+        
         // Check for duplicate (case-insensitive, trimmed) for this user
         const existingApplication = await Application.findOne({
             userId: req.user._id,
             company_name: { $regex: new RegExp(`^${normalizedCompany.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
             job_title: { $regex: new RegExp(`^${normalizedTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') }
         });
+
+        console.log('Existing application found?', !!existingApplication);
+        if (existingApplication) {
+            console.log('Existing app userId:', existingApplication.userId);
+            console.log('Current user _id:', req.user._id);
+            console.log('Are they equal?', existingApplication.userId.toString() === req.user._id.toString());
+        }
 
         if (existingApplication) {
             return res.status(409).json({
