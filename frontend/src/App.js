@@ -114,19 +114,13 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     
-    // Notify extension to logout as well
-    try {
-      // eslint-disable-next-line no-undef
-      chrome.runtime.sendMessage(
-        'lbeihaoanhokdoneifjndckafifjiied',
-        { action: 'logout' },
-        (response) => {
-          console.log('Logout signal sent to extension');
-        }
-      );
-    } catch (e) {
-      console.log('Chrome extension API not available');
-    }
+    // Notify extension to logout via postMessage (more reliable than extension ID)
+    window.postMessage({ 
+      type: 'JOB_TRACKER_LOGOUT',
+      source: 'job-tracker-dashboard'
+    }, '*');
+    
+    console.log('Logout signal broadcast to extension');
     
     navigate('/login');
   };

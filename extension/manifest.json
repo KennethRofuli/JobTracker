@@ -13,7 +13,8 @@
   ],
   "externally_connectable": {
     "matches": [
-      "https://job-tracker-seven-lake.vercel.app/*"
+      "https://job-tracker-seven-lake.vercel.app/*",
+      "http://localhost:3000/*"
     ]
   },
   "action": {
@@ -38,6 +39,13 @@
         "*://*.onlinejobs.ph/jobseekers/jobview/*"
       ],
       "js": ["content.js"]
+    },
+    {
+      "matches": [
+        "https://job-tracker-seven-lake.vercel.app/*",
+        "http://localhost:3000/*"
+      ],
+      "js": ["dashboard-listener.js"]
     }
   ]
 }

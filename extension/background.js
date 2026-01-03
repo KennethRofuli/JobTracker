@@ -58,6 +58,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveApplication') {
     saveToAPI(request.data);
   }
+  
+  if (request.action === 'showNotification') {
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'icons/icon48.png',
+      title: request.title || 'Job Tracker',
+      message: request.message || ''
+    });
+  }
 });
 
 // Save to your backend API
