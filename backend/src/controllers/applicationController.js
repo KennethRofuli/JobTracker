@@ -94,6 +94,11 @@ exports.createApplication = async (req, res) => {
         });
     } catch (error) {
         // Handle MongoDB duplicate key error
+        console.log('=== ERROR CAUGHT ===');
+        console.log('Error code:', error.code);
+        console.log('Error message:', error.message);
+        console.log('Error:', error);
+        
         if (error.code === 11000) {
             return res.status(409).json({
                 success: false,
