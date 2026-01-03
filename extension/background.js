@@ -72,8 +72,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Save to your backend API
 async function saveToAPI(data) {
   try {
-    // Get token from storage
-    const result = await chrome.storage.local.get(['authToken']);
+    // Get token and user info from storage
+    const result = await chrome.storage.local.get(['authToken', 'userId', 'userName']);
     const token = result.authToken;
 
     if (!token) {
@@ -96,27 +96,54 @@ async function saveToAPI(data) {
     });
     
     if (response.status === 401) {
-      // Token expired or invalid
-      chrome.storage.local.remove('authToken');
+      // Token expired or invalid - clear all data
+      chrome.storage.local.clear();
       chrome.notifications.create({
         type: 'basic',
         iconUrl: 'icons/icon48.png',
         title: 'Session Expired',
-        message: 'Please log in again to Job Tracker'
+        message: 'Please open extension popup and log in again'
+      });
+      return;
+    }
+    
+    if (response.status === 409) {
+      // Duplicate entry
+      const errorData = await response.json();
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icons/icon48.png',
+        title: 'Already Saved',
+        message: `${data.company_name} - ${data.job_title} is already in your tracker`
       });
       return;
     }
 
     if (response.ok) {
-      // Show notification
+      // Show success notification
+      const userName = result.userName ? ` (${result.userName})` : '';
       chrome.notifications.create({
         type: 'basic',
         iconUrl: 'icons/icon48.png',
-        title: 'Job Saved!',
+        title: 'Job Saved!' + userName,
         message: `${data.company_name} - ${data.job_title}`
+      });
+    } else {
+      // Other error
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icons/icon48.png',
+        title: 'Save Failed',
+        message: 'Could not save job application. Please try again.'
       });
     }
   } catch (error) {
     console.error('Failed to save:', error);
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'icons/icon48.png',
+      title: 'Error',
+      message: 'Network error. Check your connection.'
+    });
   }
 }

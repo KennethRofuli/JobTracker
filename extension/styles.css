@@ -26,6 +26,26 @@ h2 {
   color: #333;
 }
 
+.warning-banner {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.warning-banner strong {
+  display: block;
+  color: #856404;
+  margin-bottom: 4px;
+}
+
+.warning-banner p {
+  margin: 0;
+  color: #856404;
+}
+
 .form-group {
   margin-bottom: 8px;
 }

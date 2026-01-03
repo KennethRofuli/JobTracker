@@ -10,6 +10,12 @@
     
     <!-- Auth Status -->
     <div id="authSection">
+      <!-- Warning banner for user mismatch (hidden by default) -->
+      <div id="userMismatchWarning" class="warning-banner" style="display: none;">
+        <strong>⚠️ Wrong User Detected!</strong>
+        <p>Extension is logged in as a different user. Please logout and login again.</p>
+      </div>
+      
       <div id="loggedOut" class="auth-section">
         <p class="auth-message">Please log in to save job applications</p>
         <button id="loginBtn" class="btn-primary">Login with Google</button>
