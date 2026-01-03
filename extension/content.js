@@ -131,7 +131,8 @@ document.addEventListener('click', (e) => {
   const target = e.target;
   const buttonText = target.innerText?.toLowerCase() || '';
   const ariaLabel = target.getAttribute('aria-label')?.toLowerCase() || '';
-  const className = target.className?.toLowerCase() || '';
+  // Handle className safely - it might be an SVGAnimatedString object
+  const className = (typeof target.className === 'string' ? target.className : target.className?.baseVal || '').toLowerCase();
   
   // Only trigger on actual Apply buttons, not just any button with "apply" text
   const isApplyButton = (
