@@ -124,9 +124,6 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
   const result = await chrome.storage.local.get(['authToken', 'userId', 'userName']);
   const token = result.authToken;
   
-  console.log('=== MANUAL SAVE ===');
-  console.log('Logged in as:', result.userName, '| User ID:', result.userId);
-  
   if (!token) {
     showMessage('❌ Please log in first', 'error');
     return;
@@ -141,8 +138,6 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
     status: document.getElementById('status').value,
     date_applied: new Date()
   };
-  
-  console.log('Saving job:', data.company_name, '-', data.job_title);
   
   try {
     const response = await fetch('https://jobtracker-backend-hqzq.onrender.com/api/applications', {
@@ -166,7 +161,6 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
       document.getElementById('jobForm').reset();
     } else if (response.status === 409) {
       const errorData = await response.json();
-      console.error('Duplicate detected:', errorData);
       showMessage('⚠️ Already saved in your tracker!', 'warning');
     } else {
       showMessage('❌ Failed to save', 'error');

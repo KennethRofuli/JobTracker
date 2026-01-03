@@ -76,10 +76,6 @@ async function saveToAPI(data) {
     const result = await chrome.storage.local.get(['authToken', 'userId', 'userName']);
     const token = result.authToken;
 
-    console.log('=== SAVING JOB ===');
-    console.log('Logged in as:', result.userName, '| User ID:', result.userId);
-    console.log('Job:', data.company_name, '-', data.job_title);
-
     if (!token) {
       chrome.notifications.create({
         type: 'basic',
