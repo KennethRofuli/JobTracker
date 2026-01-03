@@ -1,7 +1,16 @@
 // Check auth status on load
 document.addEventListener('DOMContentLoaded', async () => {
-  const result = await chrome.storage.local.get(['authToken']);
+  const result = await chrome.storage.local.get(['authToken', 'userId']);
   const token = result.authToken;
+  
+  // Migration: If token exists but no userId, clear everything (old version data)
+  if (token && !result.userId) {
+    console.log('Migrating: Clearing old token without user info');
+    await chrome.storage.local.clear();
+    showLoggedOut();
+    showMessage('⚠️ Please log in again (security update)', 'warning');
+    return;
+  }
   
   if (token) {
     // Verify token is still valid
@@ -15,11 +24,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Check if this is a different user and update stored info
         const stored = await chrome.storage.local.get(['userId']);
         if (!stored.userId || stored.userId !== user._id) {
-          // Different user, update stored info
-          await chrome.storage.local.set({
-            userId: user._id,
-            userName: user.name
-          });
+          // Different user detected! Clear and require re-login
+          console.log('Different user detected, clearing storage');
+          await chrome.storage.local.clear();
+          showLoggedOut();
+          showMessage('⚠️ User changed - please log in again', 'warning');
+          return;
         }
         showLoggedIn(user.name);
       } else {
