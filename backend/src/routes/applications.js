@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
-const { applicationValidation, validate } = require('../middleware/validation');
+const { applicationValidation, updateValidation, validate } = require('../middleware/validation');
 const { createLimiter } = require('../middleware/rateLimiter');
 const {
     getApplications,
@@ -20,7 +20,7 @@ router.route('/')
 
 router.route('/:id')
     .get(getApplication)
-    .put(applicationValidation, validate, updateApplication)
+    .put(updateValidation, validate, updateApplication)
     .delete(deleteApplication);
 
 module.exports = router;
