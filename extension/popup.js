@@ -12,10 +12,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       if (response.ok) {
         const user = await response.json();
+        // Check if this is a different user and update stored info
+        const stored = await chrome.storage.local.get(['userId']);
+        if (!stored.userId || stored.userId !== user._id) {
+          // Different user, update stored info
+          await chrome.storage.local.set({
+            userId: user._id,
+            userName: user.name
+          });
+        }
         showLoggedIn(user.name);
       } else {
         showLoggedOut();
-        chrome.storage.local.remove('authToken');
+        chrome.storage.local.remove(['authToken', 'userId', 'userName']);
       }
     } catch (error) {
       showLoggedOut();
@@ -75,7 +84,11 @@ document.getElementById('saveTokenBtn').addEventListener('click', async () => {
     
     if (response.ok) {
       const user = await response.json();
-      await chrome.storage.local.set({ authToken: token });
+      await chrome.storage.local.set({ 
+        authToken: token,
+        userId: user._id,
+        userName: user.name
+      });
       showLoggedIn(user.name);
       showMessage('✅ Logged in successfully!', 'success');
       document.getElementById('tokenInput').value = '';
@@ -89,7 +102,7 @@ document.getElementById('saveTokenBtn').addEventListener('click', async () => {
 
 // Logout button
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await chrome.storage.local.remove('authToken');
+  await chrome.storage.local.remove(['authToken', 'userId', 'userName']);
   showLoggedOut();
   showMessage('Logged out', 'success');
 });
@@ -138,7 +151,7 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
       document.getElementById('jobForm').reset();
     } else if (response.status === 409) {
       const errorData = await response.json();
-      showMessage('⚠️ Already saved: ' + errorData.error, 'warning');
+      showMessage('⚠️ Already saved in your tracker!', 'warning');
     } else {
       showMessage('❌ Failed to save', 'error');
     }

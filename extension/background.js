@@ -2,25 +2,43 @@
 chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
   if (request.action === 'setToken' && request.token) {
     // Save token from web app
-    chrome.storage.local.set({ authToken: request.token }, () => {
-      console.log('Token received from web app and saved');
-      sendResponse({ success: true });
-      
-      // Show success notification
-      chrome.notifications.create({
-        type: 'basic',
-        iconUrl: 'icons/icon48.png',
-        title: 'Login Successful!',
-        message: 'You are now logged in to Job Tracker'
+    // First, get user info to store with token
+    fetch('https://jobtracker-backend-hqzq.onrender.com/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${request.token}` }
+    })
+    .then(res => res.json())
+    .then(user => {
+      chrome.storage.local.set({ 
+        authToken: request.token,
+        userId: user._id,
+        userName: user.name
+      }, () => {
+        console.log('Token and user info received from web app and saved');
+        sendResponse({ success: true });
+        
+        // Show success notification
+        chrome.notifications.create({
+          type: 'basic',
+          iconUrl: 'icons/icon48.png',
+          title: 'Login Successful!',
+          message: `Welcome ${user.name}! You are now logged in to Job Tracker`
+        });
+      });
+    })
+    .catch(err => {
+      console.error('Failed to get user info:', err);
+      // Still save the token
+      chrome.storage.local.set({ authToken: request.token }, () => {
+        sendResponse({ success: true });
       });
     });
     return true; // Keep the message channel open for sendResponse
   }
   
   if (request.action === 'logout') {
-    // Clear token from extension
-    chrome.storage.local.remove('authToken', () => {
-      console.log('Logged out from extension');
+    // Clear all user data from extension
+    chrome.storage.local.remove(['authToken', 'userId', 'userName'], () => {
+      console.log('Logged out from extension - all user data cleared');
       sendResponse({ success: true });
       
       // Show logout notification

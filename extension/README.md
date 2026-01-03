@@ -40,10 +40,26 @@
 - When you click "Apply" on LinkedIn/Indeed, the extension automatically detects and saves the job
 - You'll see a browser notification confirming the save
 
+## ⚠️ Multiple Users on Same Computer
+
+**IMPORTANT**: If multiple people use Job Tracker on the same computer:
+
+1. **Always log out from the extension** when switching users
+2. Click the extension icon → Click "Logout" button  
+3. The next user should log in with their own account
+
+**Why?** The extension stores login tokens locally in Chrome. If User A logs out from the website but NOT the extension, and User B logs in to the website, the extension will still use User A's token. This causes jobs to be saved to the wrong account and shows "already saved" errors.
+
+**Best Practice:**
+- When done using Job Tracker, logout from BOTH:
+  - ✓ The website dashboard (click Logout button)
+  - ✓ The browser extension (click extension icon → Logout)
+
 ## 🛠️ Troubleshooting
 
-- **Extension not working?** Make sure your backend is running on `http://localhost:5000`
-- **Can't capture data?** Some job sites may have updated their HTML structure - you may need to update the selectors in `content.js`
+- **"Already saved" error when different users try to save same job:** Previous user didn't log out from extension. Click extension icon → Logout → Login with correct account
+- **Extension not working?** Make sure your backend is running and you're logged in (click extension icon to check)
+- **Can't capture data?** Refresh the job posting page (F5) and try again
 - **CORS errors?** Make sure CORS is enabled in your backend (`app.use(cors())`)
 
 ## 🎯 Supported Job Sites
