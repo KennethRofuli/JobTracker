@@ -143,33 +143,51 @@ You should see the **Job Tracker** extension installed!
 ![Extension Popup](screenshots/extension-popup.png)
 *Browser extension popup for manual entry and authentication*
 
-### Method 1: Automatic Capture (Recommended)
+### Method 1: Manual Entry with Extension (Recommended)
 
-1. **Navigate** to a supported job site (Indeed, LinkedIn, Glassdoor, OnlineJobs.ph)
-2. **Open** a job posting
-3. **Click** the "Apply" button on the job posting
-4. The extension will **automatically capture** and save the job details
-5. You'll see a **success notification** confirming the save
+This is the **most reliable method** for capturing job applications:
 
-**Auto-capture works when:**
-- You're on a job details page
-- Company name and job title are visible
-- You click the actual "Apply" or "Easy Apply" button
-- You're logged in via the extension
-
-### Method 2: Manual Entry
-
-1. **Click** the extension icon in your Chrome toolbar
-2. The popup will **attempt to auto-fill** data from the current page
-3. **Fill in** or edit any fields:
+1. **Open** a job posting on any site (Indeed, LinkedIn, Glassdoor, OnlineJobs.ph, etc.)
+2. **Click** the extension icon in your Chrome toolbar
+3. The popup will **attempt to auto-fill** data from the current page
+4. **Review and edit** the auto-filled fields:
    - Company Name (required)
    - Job Title (required)
    - Location
-   - Job URL
+   - Job URL (auto-filled)
    - Source (Indeed, LinkedIn, etc.)
    - Status (Applied, Interview, Offer, Rejected)
-4. **Click** "Save Application"
-5. Success message appears!
+5. **Click** "Save Application"
+6. Success message appears!
+
+**Why manual entry is recommended:**
+- ✅ Works on **any job site**, not just supported ones
+- ✅ You can **verify** the data before saving
+- ✅ Takes only **5-10 seconds** per application
+- ✅ No duplicates or missing data
+- ✅ Add notes or custom status immediately
+
+### Method 2: Automatic Capture (Experimental)
+
+**⚠️ Note: Auto-capture is unreliable** due to frequent website changes. Use as a backup only.
+
+1. **Navigate** to a supported job site (Indeed, LinkedIn, Glassdoor, OnlineJobs.ph)
+2. **Open** a job posting
+3. **Click** the "Apply" or "Easy Apply" button on the job posting
+4. The extension *may* automatically capture and save the job details
+5. Check dashboard to confirm it was saved correctly
+
+**Known limitations:**
+- ❌ Job sites frequently change their HTML structure, breaking auto-capture
+- ❌ May capture incomplete or incorrect data
+- ❌ Doesn't work on all job sites
+- ❌ Timing issues can cause failures
+- ⚠️ **Always verify** captured data in the dashboard
+
+**If auto-capture fails:**
+- Use the manual entry method (Method 1) instead
+- The extension popup can still auto-fill most fields
+- Takes only a few seconds to manually save
 
 ### Managing Applications
 
