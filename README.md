@@ -14,6 +14,28 @@ A comprehensive MERN stack application that automatically tracks your job applic
 - **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, and OnlineJobs.ph
 - **Google OAuth**: Secure authentication with your Google account
 
+## Screenshots
+
+### Dashboard Overview
+![Dashboard View](screenshots/dashboard.png)
+*Main dashboard showing your job applications with search, filters, and statistics*
+
+### Statistics Cards
+![Stats Cards](screenshots/stats-cards.png)
+*Real-time statistics tracking your application progress - click any card to filter*
+
+### Browser Extension
+![Extension Popup](screenshots/extension-popup.png)
+*Browser extension popup for manual entry and quick access*
+
+### Search & Filter
+![Search and Filter](screenshots/search-filter.png)
+*Powerful search and filtering options to find applications quickly*
+
+### Google OAuth Login
+![Login Page](screenshots/login-page.png)
+*Secure authentication with your Google account*
+
 ## Tech Stack
 
 ### Backend
@@ -167,22 +189,92 @@ You should see the **Job Tracker** extension installed!
 
 ### Managing Applications
 
-**Dashboard Features:**
+#### Dashboard Features Overview
 
-**Stats Cards** (clickable to filter):
-- Total Applications
+The dashboard provides a comprehensive view of all your job applications with powerful management tools.
+
+#### Interactive Stats Cards (Clickable Filters)
+
+Click any stat card to instantly filter your applications:
+- **Total Applications** - Shows all applications (removes filters)
+- **Applied** - Shows only "Applied" status
+- **Interviewing** - Shows only "Interviewing" status  
+- **Offers** - Shows only "Offered" status
+- **Rejected** - Shows only "Rejected" status
+
+*Tip: Click the same card again to clear the filter*
+
+#### Search Functionality
+
+**Search Bar** (🔍 icon):
+- Search by **company name** (e.g., "Google", "Microsoft")
+- Search by **job title** (e.g., "Software Engineer", "Developer")
+- Real-time filtering as you type
+- Case-insensitive search
+
+#### Filtering Options
+
+**Status Filter**:
+- All Status (default)
 - Applied
-- Interview
-- Offers
+- Interviewing
+- Offered
 - Rejected
+- Accepted
 
-**Search Bar**: Search by company name or job title
+**Date Filter**:
+- All Time (default)
+- Last 7 Days
+- Last 30 Days
+- Last 90 Days
 
-**Application Table**:
-- View all application details
-- Click company names to open job URLs
-- Update status with dropdown
-- Delete applications with delete button
+**Sort Options**:
+- 📅 Newest First (default)
+- 📅 Oldest First
+- 🏢 Company A-Z
+- 🏢 Company Z-A
+
+#### Application Table Features
+
+**Columns Displayed**:
+- **Company** - Click to open job URL in new tab
+- **Job Title** - Full position title
+- **Location** - Job location (if available)
+- **Date Applied** - When you applied
+- **Source** - Where you found the job (LinkedIn, Indeed, etc.)
+- **Status** - Current application status (editable dropdown)
+- **Actions** - Delete button
+
+**Interactive Features**:
+- **Click company names** with 🔗 icon to revisit job postings
+- **Update status** by selecting from dropdown (Applied → Interviewing → Offered, etc.)
+- **Delete applications** with delete button (confirmation required)
+- **Pagination** - 25 applications per page
+- **Results counter** - Shows "Showing X-Y of Z applications"
+
+#### Export Functionality
+
+**CSV Export** (📥 Export button):
+- Exports currently filtered applications
+- Includes: Company, Job Title, Location, Status, Source, Date Applied, URL
+- Opens as downloadable CSV file
+- Perfect for backup or external analysis
+
+#### Additional Dashboard Actions
+
+**Refresh Button** (🔄):
+- Manually refresh data from server
+- Syncs latest changes from extension
+
+**Extension Token** (🔑 button):
+- Copy authentication token for extension
+- Use if automatic login fails
+- Token expires after 30 days
+
+**Logout Button**:
+- Sign out of your account
+- Clears local authentication
+- Notifies extension to log out
 
 ## Supported Job Sites
 
