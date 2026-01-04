@@ -493,6 +493,86 @@
   font-weight: 300;
 }
 
+/* Connection Error Styles */
+.connection-error-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  padding: 2rem;
+}
+
+.connection-error {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  text-align: center;
+}
+
+.connection-error .error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.connection-error h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.connection-error p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.connection-error ul {
+  text-align: left;
+  margin: 1.5rem auto;
+  padding-left: 1.5rem;
+  max-width: 450px;
+  color: #444;
+  line-height: 1.8;
+}
+
+.connection-error li {
+  margin-bottom: 0.75rem;
+}
+
+.connection-error code {
+  background: #f5f5f5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #d32f2f;
+}
+
+.retry-btn {
+  margin-top: 2rem;
+  padding: 0.875rem 2rem;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover {
+  background: #1976D2;
+}
+
+.retry-btn:active {
+  transform: scale(0.98);
+}
+
 /* Authentication Styles */
 .login-container {
   min-height: 100vh;

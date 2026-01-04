@@ -20,6 +20,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
   const [user, setUser] = useState(null);
+  const [connectionError, setConnectionError] = useState(false);
 
   // Check authentication and fetch user data
   useEffect(() => {
@@ -32,15 +33,33 @@ function App() {
       }
 
       try {
-        const response = await axios.get(`${API_URL}/auth/me`, {
+        // Add timeout to detect backend connectivity issues
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), 10000)
+        );
+        
+        const authPromise = axios.get(`${API_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        
+        const response = await Promise.race([authPromise, timeoutPromise]);
         setUser(response.data);
+        setConnectionError(false);
         fetchApplications();
       } catch (err) {
         console.error('Auth check failed:', err);
-        localStorage.removeItem('token');
-        navigate('/login');
+        
+        // Check if it's a connection/timeout error vs authentication error
+        if (err.message === 'timeout' || err.code === 'ERR_NETWORK' || !err.response) {
+          setConnectionError(true);
+          setLoading(false);
+        } else if (err.response?.status === 401) {
+          localStorage.removeItem('token');
+          navigate('/login');
+        } else {
+          setConnectionError(true);
+          setLoading(false);
+        }
       }
     };
 
@@ -133,6 +152,12 @@ function App() {
     }
   };
 
+  const retryConnection = () => {
+    setConnectionError(false);
+    setLoading(true);
+    window.location.reload();
+  };
+
   const exportToCSV = () => {
     if (filteredAndSortedApplications.length === 0) {
       alert('No applications to export');
@@ -214,6 +239,27 @@ function App() {
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, filterStatus, dateFilter, sortBy, sortOrder]);
+
+  // Show connection error UI if backend is unreachable
+  if (connectionError) {
+    return (
+      <div className="connection-error-container">
+        <div className="connection-error">
+          <div className="error-icon">🔌</div>
+          <h2>Unable to Connect to Backend</h2>
+          <p>The backend server is not responding. Please ensure:</p>
+          <ul>
+            <li>Backend server is running on <strong>port 5000</strong></li>
+            <li>Run <code>cd backend && npm start</code> in terminal</li>
+            <li>Check if another application is using port 5000</li>
+          </ul>
+          <button onClick={retryConnection} className="retry-btn">
+            🔄 Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return <div className="loading">Loading...</div>;
