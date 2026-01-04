@@ -14,28 +14,6 @@ A comprehensive MERN stack application that automatically tracks your job applic
 - **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, and OnlineJobs.ph
 - **Google OAuth**: Secure authentication with your Google account
 
-## Screenshots
-
-### Dashboard Overview
-![Dashboard View](screenshots/dashboard.png)
-*Main dashboard showing your job applications with search, filters, and statistics*
-
-### Statistics Cards
-![Stats Cards](screenshots/stats-cards.png)
-*Real-time statistics tracking your application progress - click any card to filter*
-
-### Browser Extension
-![Extension Popup](screenshots/extension-popup.png)
-*Browser extension popup for manual entry and quick access*
-
-### Search & Filter
-![Search and Filter](screenshots/search-filter.png)
-*Powerful search and filtering options to find applications quickly*
-
-### Google OAuth Login
-![Login Page](screenshots/login-page.png)
-*Secure authentication with your Google account*
-
 ## Tech Stack
 
 ### Backend
@@ -153,11 +131,17 @@ You should see the **Job Tracker** extension installed!
 3. Authorize the application with your Google account
 4. You'll be redirected to your dashboard
 
+![Login Page](screenshots/login-page.png)
+*Secure Google OAuth login page*
+
 ### Extension Setup
 
 1. Click the extension icon in Chrome
 2. Click **Login with Google** (opens web app)
 3. Or paste your auth token manually from the web app
+
+![Extension Popup](screenshots/extension-popup.png)
+*Browser extension popup for manual entry and authentication*
 
 ### Method 1: Automatic Capture (Recommended)
 
@@ -189,11 +173,17 @@ You should see the **Job Tracker** extension installed!
 
 ### Managing Applications
 
+![Dashboard View](screenshots/dashboard.png)
+*Main dashboard showing your job applications with search, filters, and statistics*
+
 #### Dashboard Features Overview
 
 The dashboard provides a comprehensive view of all your job applications with powerful management tools.
 
 #### Interactive Stats Cards (Clickable Filters)
+
+![Stats Cards](screenshots/stats-cards.png)
+*Click any stat card to filter applications by status*
 
 Click any stat card to instantly filter your applications:
 - **Total Applications** - Shows all applications (removes filters)
@@ -213,6 +203,9 @@ Click any stat card to instantly filter your applications:
 - Case-insensitive search
 
 #### Filtering Options
+
+![Search and Filter](screenshots/search-filter.png)
+*Search bar and filtering controls for finding applications*
 
 **Status Filter**:
 - All Status (default)
