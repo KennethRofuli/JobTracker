@@ -52,6 +52,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // CORS configuration
+// Note: credentials: true is required for cookie-based authentication
+// Mobile browsers with sameSite: 'none' require proper origin configuration
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:3000',
     credentials: true, // Required for cookies

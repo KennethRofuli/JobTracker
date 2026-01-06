@@ -13,6 +13,7 @@ A comprehensive MERN stack application that automatically tracks your job applic
 - **Location Tracking**: Automatically captures job location information
 - **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, and OnlineJobs.ph
 - **Google OAuth**: Secure authentication with your Google account
+- **Mobile Support**: Authentication works on both desktop and mobile browsers
 
 ## Tech Stack
 
@@ -345,9 +346,11 @@ Click any stat card to instantly filter your applications:
 - Clear browser cache and reload
 
 ### Authentication issues
-- Token expires after 30 days
+- Token expires after 7 days
 - Log in again to get a new token
 - Make sure Google OAuth is properly configured
+- **Mobile browsers**: HTTPS is required for authentication to work properly
+- See [MOBILE_AUTH_FIX.md](MOBILE_AUTH_FIX.md) for mobile-specific authentication details
 
 ## Project Structure
 
