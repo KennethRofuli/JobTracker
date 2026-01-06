@@ -7,6 +7,9 @@
 
 const { isMobileBrowser, getCookieConfig } = require('./src/utils/userAgent');
 
+// Constants
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
 console.log('=== Mobile Authentication Configuration Test ===\n');
 
 // Test cases with different user agents
@@ -84,7 +87,7 @@ environments.forEach(env => {
     console.log(`   httpOnly: ${mobileConfig.httpOnly}`);
     console.log(`   secure: ${mobileConfig.secure}`);
     console.log(`   sameSite: ${mobileConfig.sameSite}`);
-    console.log(`   maxAge: ${mobileConfig.maxAge / (24 * 60 * 60 * 1000)} days`);
+    console.log(`   maxAge: ${mobileConfig.maxAge / MILLISECONDS_PER_DAY} days`);
     
     // Validate mobile config
     const mobileValid = 
@@ -100,7 +103,7 @@ environments.forEach(env => {
     console.log(`   httpOnly: ${desktopConfig.httpOnly}`);
     console.log(`   secure: ${desktopConfig.secure}`);
     console.log(`   sameSite: ${desktopConfig.sameSite}`);
-    console.log(`   maxAge: ${desktopConfig.maxAge / (24 * 60 * 60 * 1000)} days`);
+    console.log(`   maxAge: ${desktopConfig.maxAge / MILLISECONDS_PER_DAY} days`);
     
     // Validate desktop config
     const desktopValid = 

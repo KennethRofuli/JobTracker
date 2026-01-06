@@ -63,9 +63,9 @@ function getCookieConfig(userAgent, isProduction) {
 
 **File:** `backend/server.js`
 
-- Session cookies now use dynamic configuration
-- Mobile browsers get `sameSite: 'none'` for session cookies too
-- Maintains consistency across all cookie types
+- Session cookies use `sameSite: 'none'` in production for mobile compatibility
+- Uses `sameSite: 'lax'` in development for easier local testing
+- Auth token cookies use dynamic per-request configuration based on User-Agent
 
 ---
 

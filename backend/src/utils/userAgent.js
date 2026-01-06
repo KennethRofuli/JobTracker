@@ -10,7 +10,7 @@
 function isMobileBrowser(userAgent) {
     if (!userAgent) return false;
     
-    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile/i;
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i;
     return mobileRegex.test(userAgent);
 }
 

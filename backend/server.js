@@ -66,24 +66,20 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(cookieParser());
 
-// Dynamic session configuration based on user agent
-app.use((req, res, next) => {
-    const userAgent = req.headers['user-agent'] || '';
-    const isProduction = process.env.NODE_ENV === 'production';
-    const cookieConfig = getCookieConfig(userAgent, isProduction);
-    
-    session({
-        secret: process.env.SESSION_SECRET || 'your-secret-key',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            secure: cookieConfig.secure,
-            httpOnly: true,
-            sameSite: cookieConfig.sameSite,
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
-        }
-    })(req, res, next);
-});
+// Session configuration with dynamic cookie settings
+// Note: We set the most permissive settings that work for both mobile and desktop
+// Individual cookie responses in auth routes will use more specific settings
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' in prod for mobile compatibility
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
 
 app.use(passport.initialize());
 
