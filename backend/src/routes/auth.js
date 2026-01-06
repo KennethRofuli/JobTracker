@@ -3,6 +3,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { authLimiter } = require('../middleware/rateLimiter');
+const { getCookieConfig } = require('../utils/userAgent');
 const router = express.Router();
 
 // @desc    Auth with Google
@@ -52,13 +53,13 @@ router.get(
             { expiresIn: '7d' } // Reduced from 30d to 7d
         );
 
-        // Set token in secure, httpOnly cookie instead of URL
-        res.cookie('auth_token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
+        // Get appropriate cookie configuration based on user agent
+        const userAgent = req.headers['user-agent'] || '';
+        const isProduction = process.env.NODE_ENV === 'production';
+        const cookieConfig = getCookieConfig(userAgent, isProduction);
+
+        // Set token in secure, httpOnly cookie with mobile-compatible settings
+        res.cookie('auth_token', token, cookieConfig);
 
         // Redirect to frontend without token in URL
         res.redirect(`${process.env.CLIENT_URL}/auth-success`);
@@ -114,11 +115,16 @@ router.get('/token', async (req, res) => {
 // @desc    Logout
 // @route   POST /api/auth/logout
 router.post('/logout', (req, res) => {
-    // Clear auth cookie
+    // Get appropriate cookie configuration based on user agent
+    const userAgent = req.headers['user-agent'] || '';
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cookieConfig = getCookieConfig(userAgent, isProduction);
+    
+    // Clear auth cookie with same settings as when it was set
     res.clearCookie('auth_token', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        httpOnly: cookieConfig.httpOnly,
+        secure: cookieConfig.secure,
+        sameSite: cookieConfig.sameSite
     });
     res.json({ message: 'Logged out successfully' });
 });
