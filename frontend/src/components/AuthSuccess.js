@@ -1,49 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 function AuthSuccess() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Get token from URL
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-
-    console.log('AuthSuccess - Token from URL:', token);
-
-    if (token) {
-      // Store token in localStorage
-      localStorage.setItem('token', token);
-      console.log('Token stored, redirecting to dashboard...');
-      
-      // Try to send token to extension if installed
+    // With cookie-based auth, token is automatically sent in cookies
+    // Just verify authentication worked
+    const verifyAuth = async () => {
       try {
-        // eslint-disable-next-line no-undef
-        chrome.runtime.sendMessage(
-          'lbeihaoanhokdoneifjndckafifjiied',
-          { action: 'setToken', token: token },
-          (response) => {
-            // eslint-disable-next-line no-undef
-            if (chrome.runtime.lastError) {
-              console.log('Extension not installed or not reachable');
-            } else {
-              console.log('Token sent to extension successfully');
-            }
-          }
-        );
-      } catch (e) {
-        console.log('Chrome extension API not available');
+        // This will use the cookie automatically
+        const response = await axios.get(`${API_URL}/auth/me`, {
+          withCredentials: true
+        });
+        
+        console.log('Authentication successful:', response.data);
+        
+        // Note: Extension support would need to be updated to work with cookies
+        // or implement a different token sharing mechanism
+        
+        // Redirect to dashboard
+        setTimeout(() => navigate('/'), 100);
+      } catch (err) {
+        console.error('Authentication verification failed:', err);
+        setError('Authentication failed');
+        setTimeout(() => navigate('/login'), 2000);
       }
-      
-      // Redirect to dashboard
-      setTimeout(() => navigate('/'), 100);
-    } else {
-      // No token, redirect to login
-      console.error('No token found in URL');
-      setError('No authentication token received');
-      setTimeout(() => navigate('/login'), 2000);
-    }
+    };
+
+    verifyAuth();
   }, [navigate]);
 
   return (

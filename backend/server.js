@@ -53,7 +53,8 @@ if (process.env.NODE_ENV === 'development') {
 // CORS configuration
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    credentials: true
+    credentials: true, // Required for cookies
+    optionsSuccessStatus: 200
 }));
 
 // Body parser with size limits
@@ -68,6 +69,7 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
         httpOnly: true,
+        sameSite: 'lax', // CSRF protection
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));

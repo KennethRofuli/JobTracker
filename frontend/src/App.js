@@ -25,21 +25,15 @@ function App() {
   // Check authentication and fetch user data
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
       try {
         // Add timeout to detect backend connectivity issues
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('timeout')), 10000)
         );
         
+        // With cookie-based auth, no need to get token from localStorage
         const authPromise = axios.get(`${API_URL}/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` }
+          withCredentials: true // Send cookies with request
         });
         
         const response = await Promise.race([authPromise, timeoutPromise]);
@@ -54,7 +48,6 @@ function App() {
           setConnectionError(true);
           setLoading(false);
         } else if (err.response?.status === 401) {
-          localStorage.removeItem('token');
           navigate('/login');
         } else {
           setConnectionError(true);
@@ -67,23 +60,15 @@ function App() {
   }, [navigate]);
 
   const fetchApplications = async () => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/applications`, {
-        headers: { Authorization: `Bearer ${token}` }
+        withCredentials: true // Send cookies with request
       });
       setApplications(response.data.data);
       setError(null);
     } catch (err) {
       if (err.response?.status === 401) {
-        localStorage.removeItem('token');
         navigate('/login');
       } else {
         setError('Failed to load applications. Make sure backend is running on port 5000.');
@@ -99,11 +84,9 @@ function App() {
       return;
     }
     
-    const token = localStorage.getItem('token');
-    
     try {
       await axios.delete(`${API_URL}/applications/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        withCredentials: true
       });
       setApplications(applications.filter(app => app._id !== id));
     } catch (err) {
@@ -113,13 +96,11 @@ function App() {
   };
 
   const updateStatus = async (id, newStatus) => {
-    const token = localStorage.getItem('token');
-    
     try {
       const response = await axios.put(
         `${API_URL}/applications/${id}`, 
         { status: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { withCredentials: true }
       );
       setApplications(applications.map(app => 
         app._id === id ? response.data.data : app
@@ -130,8 +111,15 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  const handleLogout = async () => {
+    try {
+      // Call backend to clear cookie
+      await axios.post(`${API_URL}/auth/logout`, {}, {
+        withCredentials: true
+      });
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
     
     // Notify extension to logout via postMessage (more reliable than extension ID)
     window.postMessage({ 
@@ -142,14 +130,6 @@ function App() {
     console.log('Logout signal broadcast to extension');
     
     navigate('/login');
-  };
-
-  const copyTokenForExtension = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigator.clipboard.writeText(token);
-      alert('✅ Token copied! Use this only if automatic login doesn\'t work in the extension.');
-    }
   };
 
   const retryConnection = () => {

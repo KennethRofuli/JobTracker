@@ -438,6 +438,35 @@ Update `manifest.json` to include the new site:
 }]
 ```
 
+## Security
+
+### 🔒 OAuth Security Implementation
+
+This application implements secure OAuth 2.0 flows with:
+- ✅ CSRF protection via state parameter validation
+- ✅ Secure httpOnly cookie-based authentication
+- ✅ No tokens in URLs or browser history
+- ✅ XSS protection with httpOnly cookies
+- ✅ SameSite cookie protection
+- ✅ Short-lived tokens (7 days)
+
+**Important:** Recent security updates changed authentication from localStorage to secure cookies. See documentation below for details.
+
+### Security Documentation
+
+- **[GCP_SECURITY_CHECKLIST.md](GCP_SECURITY_CHECKLIST.md)** - Step-by-step Google Cloud Platform security configuration
+- **[OAUTH_SECURITY_IMPLEMENTATION.md](OAUTH_SECURITY_IMPLEMENTATION.md)** - Detailed security implementation guide
+- **[SECURITY_IMPLEMENTATION_SUMMARY.md](SECURITY_IMPLEMENTATION_SUMMARY.md)** - Quick overview of security changes
+- **[TESTING_QUICK_START.md](TESTING_QUICK_START.md)** - 5-minute local testing guide
+- **[SECURITY.md](SECURITY.md)** - General security best practices
+
+### For New Setup
+
+If you're setting up this project for the first time:
+1. Follow [TESTING_QUICK_START.md](TESTING_QUICK_START.md) to test locally
+2. Complete [GCP_SECURITY_CHECKLIST.md](GCP_SECURITY_CHECKLIST.md) for production deployment
+3. Review [OAUTH_SECURITY_IMPLEMENTATION.md](OAUTH_SECURITY_IMPLEMENTATION.md) for troubleshooting
+
 ## Contributing
 
 Contributions are welcome! Feel free to:
