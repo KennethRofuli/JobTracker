@@ -3,6 +3,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'extractJobData') {
     const jobData = extractJobInfo();
     sendResponse(jobData);
+  } else if (request.action === 'ping') {
+    // Respond to ping to confirm content script is loaded
+    sendResponse({ status: 'ready' });
   }
   return true; // Keep channel open for async response
 });

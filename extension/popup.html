@@ -38,6 +38,12 @@
     </div>
     
     <div id="formSection" style="display: none;">
+      <!-- Status Indicator -->
+      <div id="statusIndicator" class="status-indicator">
+        <span id="statusDot" class="status-dot"></span>
+        <span id="statusText" class="status-text">Checking page...</span>
+      </div>
+      
       <form id="jobForm">
         <div class="form-group">
           <label>Company Name *</label>
@@ -87,9 +93,14 @@
       
       <div id="message" class="message"></div>
       
-      <button id="autoCapture" class="btn-secondary">
-        🎯 Auto-Capture from Page
-      </button>
+      <div class="capture-controls">
+        <button id="autoCapture" class="btn-secondary">
+          🎯 Auto-Capture from Page
+        </button>
+        <button id="retryCapture" class="btn-retry" style="display: none;">
+          🔄 Retry
+        </button>
+      </div>
     </div>
   </div>
   

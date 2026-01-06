@@ -90,6 +90,27 @@ router.get('/me', async (req, res) => {
     }
 });
 
+// @desc    Get token for extension
+// @route   GET /api/auth/token
+router.get('/token', async (req, res) => {
+    try {
+        // Get token from cookie
+        const token = req.cookies.auth_token;
+        
+        if (!token) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+
+        // Verify token is valid
+        jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Return token for extension use
+        res.json({ token });
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
+});
+
 // @desc    Logout
 // @route   POST /api/auth/logout
 router.post('/logout', (req, res) => {

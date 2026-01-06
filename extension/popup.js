@@ -170,8 +170,41 @@ document.getElementById('jobForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Auto-capture button
-document.getElementById('autoCapture').addEventListener('click', async () => {
+// Check page status on load
+async function checkPageStatus() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    
+    // Check if on supported site
+    const supportedSites = ['indeed.com', 'linkedin.com', 'glassdoor.com', 'onlinejobs.ph'];
+    const isSupported = supportedSites.some(site => tab.url.includes(site));
+    
+    if (!isSupported) {
+      statusDot.className = 'status-dot inactive';
+      statusText.textContent = 'Not on a supported job site';
+      return { active: false, reason: 'unsupported_site' };
+    }
+    
+    // Try to ping content script
+    try {
+      await chrome.tabs.sendMessage(tab.id, { action: 'ping' });
+      statusDot.className = 'status-dot active';
+      statusText.textContent = 'Ready to capture';
+      return { active: true };
+    } catch (error) {
+      statusDot.className = 'status-dot inactive';
+      statusText.textContent = 'Page needs refresh (F5)';
+      return { active: false, reason: 'script_not_loaded' };
+    }
+  } catch (error) {
+    return { active: false, reason: 'unknown' };
+  }
+}
+
+// Auto-capture function (used by both buttons)
+async function performAutoCapture() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   
   // Check if we're on a supported site
@@ -179,12 +212,14 @@ document.getElementById('autoCapture').addEventListener('click', async () => {
   const isSupported = supportedSites.some(site => tab.url.includes(site));
   
   if (!isSupported) {
-    showMessage('⚠️ This site is not supported. Use manual entry.', 'warning');
+    showMessage('⚠️ Not on a supported job site. Supported: Indeed, LinkedIn, Glassdoor, OnlineJobs.ph', 'warning');
+    document.getElementById('retryCapture').style.display = 'none';
     return;
   }
   
   // Show loading message
   showMessage('🔄 Extracting data...', 'success');
+  document.getElementById('retryCapture').style.display = 'none';
   
   // Retry logic for inactive tabs
   const sendMessageWithRetry = async (retries = 2) => {
@@ -206,7 +241,11 @@ document.getElementById('autoCapture').addEventListener('click', async () => {
   
   if (!result.success || chrome.runtime.lastError) {
     console.error('Extension error:', result.error || chrome.runtime.lastError);
-    showMessage('⚠️ Tab was inactive. Please refresh the page (F5) and try again.', 'warning');
+    showMessage('❌ Content script not loaded. Please refresh the page (F5) first.', 'error');
+    document.getElementById('retryCapture').style.display = 'block';
+    // Update status
+    document.getElementById('statusDot').className = 'status-dot inactive';
+    document.getElementById('statusText').textContent = 'Page needs refresh (F5)';
     return;
   }
   
@@ -235,11 +274,38 @@ document.getElementById('autoCapture').addEventListener('click', async () => {
       document.getElementById('source').value = 'OnlineJobs.ph';
     }
     
-    showMessage('✅ Data captured! Click Save.', 'success');
+    showMessage('✅ Data captured! Review and click Save.', 'success');
+    document.getElementById('retryCapture').style.display = 'none';
+    // Update status
+    document.getElementById('statusDot').className = 'status-dot active';
+    document.getElementById('statusText').textContent = 'Capture successful';
   } else {
-    showMessage('⚠️ Could not extract data from this page', 'warning');
+    showMessage('⚠️ Could not find job details on this page. Try a different page or use manual entry.', 'warning');
+    document.getElementById('retryCapture').style.display = 'block';
   }
+}
+
+// Auto-capture button
+document.getElementById('autoCapture').addEventListener('click', performAutoCapture);
+
+// Retry button
+document.getElementById('retryCapture').addEventListener('click', performAutoCapture);
+
+// Check page status when form section becomes visible
+const formObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.target.id === 'formSection' && mutation.target.style.display === 'block') {
+      checkPageStatus();
+    }
+  });
 });
+
+if (document.getElementById('formSection')) {
+  formObserver.observe(document.getElementById('formSection'), {
+    attributes: true,
+    attributeFilter: ['style']
+  });
+}
 
 function showMessage(text, type) {
   const msg = document.getElementById('message');

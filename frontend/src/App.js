@@ -132,6 +132,26 @@ function App() {
     navigate('/login');
   };
 
+  const copyTokenForExtension = async () => {
+    try {
+      // Get token from backend
+      const response = await axios.get(`${API_URL}/auth/token`, {
+        withCredentials: true
+      });
+      
+      const token = response.data.token;
+      
+      // Copy to clipboard
+      await navigator.clipboard.writeText(token);
+      
+      // Show success message
+      alert('Token copied to clipboard! Paste it in the browser extension settings.');
+    } catch (err) {
+      console.error('Failed to get token:', err);
+      alert('Failed to copy token. Please try again.');
+    }
+  };
+
   const retryConnection = () => {
     setConnectionError(false);
     setLoading(true);

@@ -35,8 +35,11 @@
         "*://*.indeed.com/*",
         "*://*.glassdoor.com/job-listing/*",
         "*://*.glassdoor.com/Job/*",
+        "*://*.glassdoor.com/job/*",
+        "*://*.glassdoor.com/*/jobs/*",
         "*://*.onlinejobs.ph/jobseekers/job/*",
-        "*://*.onlinejobs.ph/jobseekers/jobview/*"
+        "*://*.onlinejobs.ph/jobseekers/jobview/*",
+        "*://*.onlinejobs.ph/jobs/*"
       ],
       "js": ["content.js"]
     },
