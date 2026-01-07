@@ -69,7 +69,7 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
         httpOnly: true,
-        sameSite: 'lax', // CSRF protection
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain in production
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
