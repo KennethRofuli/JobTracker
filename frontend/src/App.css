@@ -691,3 +691,23 @@
     min-width: 800px;
   }
 }
+
+/* Job Title with Notes */
+.job-title-link {
+  cursor: pointer;
+  color: #1a73e8;
+  transition: all 0.2s;
+  padding: 2px 4px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.job-title-link:hover {
+  background-color: #e8f0fe;
+  text-decoration: underline;
+}
+
+.has-notes-indicator {
+  margin-left: 6px;
+  font-size: 14px;
+}

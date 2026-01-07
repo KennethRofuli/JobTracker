@@ -111,6 +111,22 @@ function App() {
     }
   };
 
+  const updateNotes = async (id, notes) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/applications/${id}`, 
+        { notes },
+        { withCredentials: true }
+      );
+      setApplications(applications.map(app => 
+        app._id === id ? response.data.data : app
+      ));
+    } catch (err) {
+      alert('Failed to update notes');
+      console.error(err);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       // Call backend to clear cookie
@@ -368,6 +384,7 @@ function App() {
               applications={currentApplications}
               onDelete={deleteApplication}
               onUpdateStatus={updateStatus}
+              onUpdateNotes={updateNotes}
             />
             
             {totalPages > 1 && (

@@ -40,6 +40,11 @@ const applicationSchema = mongoose.Schema({
         type: String,
         enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted'],
         default: 'Applied'
+    },
+    notes: {
+        type: String,
+        trim: true,
+        default: ''
     }
 }, {
     timestamps: true

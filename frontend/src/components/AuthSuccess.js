@@ -20,8 +20,25 @@ function AuthSuccess() {
         
         console.log('Authentication successful:', response.data);
         
-        // Note: Extension support would need to be updated to work with cookies
-        // or implement a different token sharing mechanism
+        // Get JWT token for extension
+        try {
+          const tokenResponse = await axios.get(`${API_URL}/auth/token`, {
+            withCredentials: true
+          });
+          
+          const token = tokenResponse.data.token;
+          
+          // Send token to extension via postMessage (extension content script will listen)
+          window.postMessage({ 
+            type: 'JOB_TRACKER_LOGIN',
+            token: token,
+            source: 'job-tracker-dashboard'
+          }, '*');
+          
+          console.log('Login token broadcast to extension');
+        } catch (err) {
+          console.log('Could not send token to extension:', err.message);
+        }
         
         // Redirect to dashboard
         setTimeout(() => navigate('/'), 100);

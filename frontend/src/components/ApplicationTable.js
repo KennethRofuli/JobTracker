@@ -1,6 +1,9 @@
 import React from 'react';
+import NotesModal from './NotesModal';
 
-function ApplicationTable({ applications, onDelete, onUpdateStatus }) {
+function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNotes }) {
+  const [selectedApp, setSelectedApp] = React.useState(null);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -62,6 +65,15 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus }) {
                 ) : (
                   app.company_name
                 )}
+                <span 
+                  className="job-title-link"
+                  onClick={() => setSelectedApp(app)}
+                  title="Click to add notes"
+                >
+                  {app.job_title}
+                  {app.notes && <span className="has-notes-indicator">📝</span>}
+                </span>
+              
               </td>
               <td className="job-title">{app.job_title}</td>
               <td className="location">{app.location || '-'}</td>
@@ -97,6 +109,12 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus }) {
           ))}
         </tbody>
       </table>
+      
+      <NotesModal 
+        application={selectedApp}
+        onClose={() => setSelectedApp(null)}
+        onSave={onUpdateNotes}
+      />
     </div>
   );
 }

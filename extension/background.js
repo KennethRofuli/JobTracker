@@ -53,8 +53,40 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
   }
 });
 
-// Listen for messages from content script
+// Listen for messages from content script (including dashboard-listener.js)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // Handle setToken from content script
+  if (request.action === 'setToken' && request.token) {
+    // Get user info and save
+    fetch('https://jobtracker-backend-hqzq.onrender.com/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${request.token}` }
+    })
+    .then(res => res.json())
+    .then(user => {
+      chrome.storage.local.set({ 
+        authToken: request.token,
+        userId: user._id,
+        userName: user.name
+      }, () => {
+        console.log('Token and user info saved from dashboard');
+        sendResponse({ success: true });
+        
+        // Show success notification
+        chrome.notifications.create({
+          type: 'basic',
+          iconUrl: 'icons/icon48.png',
+          title: 'Login Successful!',
+          message: `Welcome ${user.name}! Extension is now logged in`
+        });
+      });
+    })
+    .catch(err => {
+      console.error('Failed to get user info:', err);
+      sendResponse({ success: false, error: err.message });
+    });
+    return true; // Keep message channel open
+  }
+  
   if (request.action === 'saveApplication') {
     saveToAPI(request.data);
   }
