@@ -262,13 +262,14 @@ function App() {
       <div className="connection-error-container">
         <div className="connection-error">
           <div className="error-icon">🔌</div>
-          <h2>Unable to Connect to Backend</h2>
-          <p>The backend server is not responding. Please ensure:</p>
+          <h2>Service Temporarily Unavailable</h2>
+          <p>We're having trouble connecting to the server. This could be because:</p>
           <ul>
-            <li>Backend server is running on <strong>port 5000</strong></li>
-            <li>Run <code>cd backend && npm start</code> in terminal</li>
-            <li>Check if another application is using port 5000</li>
+            <li>The service is starting up (this can take 30-60 seconds)</li>
+            <li>Temporary maintenance or updates are in progress</li>
+            <li>Network connectivity issues</li>
           </ul>
+          <p>Please wait a moment and try again.</p>
           <button onClick={retryConnection} className="retry-btn">
             🔄 Retry Connection
           </button>

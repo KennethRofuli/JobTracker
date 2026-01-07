@@ -692,6 +692,21 @@
   }
 }
 
+/* Job Title clickable for notes */
+.job-title-link {
+  cursor: pointer;
+  color: inherit;
+  transition: all 0.2s;
+  padding: 2px 4px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.job-title-link:hover {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
 /* Job Title with Notes */
 .job-title-link {
   cursor: pointer;

@@ -30,12 +30,12 @@ function NotesModal({ application, onClose, onSave }) {
     <div className="notes-modal-backdrop" onClick={handleBackdropClick}>
       <div className="notes-modal">
         <div className="notes-modal-header">
-          <h3>Notes for {application.job_title}</h3>
+          <h3>Notes</h3>
           <button className="notes-modal-close" onClick={onClose}>×</button>
         </div>
         
         <div className="notes-modal-subtitle">
-          {application.company_name} • {application.location || 'Location not specified'}
+          {application.job_title} • {application.company_name} • {application.location || 'Location not specified'}
         </div>
         
         <div className="notes-modal-body">

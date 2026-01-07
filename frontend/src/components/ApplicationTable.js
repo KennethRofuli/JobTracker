@@ -60,22 +60,22 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
               <td className="company-name">
                 {app.url ? (
                   <a href={app.url} target="_blank" rel="noopener noreferrer" className="job-link">
-                    {app.company_name} 🔗
+                    {app.company_name}
                   </a>
                 ) : (
                   app.company_name
                 )}
+              </td>
+              <td className="job-title">
                 <span 
                   className="job-title-link"
                   onClick={() => setSelectedApp(app)}
-                  title="Click to add notes"
+                  title={app.notes ? "Click to view/edit notes" : "Click to add notes"}
                 >
                   {app.job_title}
-                  {app.notes && <span className="has-notes-indicator">📝</span>}
+                  {app.notes && ' 📝'}
                 </span>
-              
               </td>
-              <td className="job-title">{app.job_title}</td>
               <td className="location">{app.location || '-'}</td>
               <td>{formatDate(app.date_applied)}</td>
               <td>
