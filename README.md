@@ -1,4 +1,4 @@
-# 📋 Job Tracker
+# Job Tracker
 
 A comprehensive MERN stack application that automatically tracks your job applications using a browser extension. Say goodbye to manual spreadsheets and hello to automated job application tracking!
 
@@ -9,19 +9,19 @@ A comprehensive MERN stack application that automatically tracks your job applic
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 **Complete documentation is available in the [docs/](./docs) folder:**
 
-- 📖 **[Documentation Home](./docs/README.md)** - Complete documentation index
-- 🚀 **[Quick Start Guide](./docs/guides/TESTING_QUICK_START.md)** - Get started in 5 minutes
-- 📱 **[Mobile OAuth Guide](./docs/guides/MOBILE_OAUTH_GUIDE.md)** - Fix iOS authentication issues
-- 🚢 **[CI/CD Setup](./docs/deployment/CI_CD_GUIDE.md)** - Automated deployment with GitHub Actions
-- 🔒 **[Security Documentation](./docs/security/SECURITY.md)** - Security features and best practices
+- **[Documentation Home](./docs/README.md)** - Complete documentation index
+- **[Quick Start Guide](./docs/guides/TESTING_QUICK_START.md)** - Get started in 5 minutes
+- **[Mobile OAuth Guide](./docs/guides/MOBILE_OAUTH_GUIDE.md)** - Fix iOS authentication issues
+- **[CI/CD Setup](./docs/deployment/CI_CD_GUIDE.md)** - Automated deployment with GitHub Actions
+- **[Security Documentation](./docs/security/SECURITY.md)** - Security features and best practices
 
 ---
 
-## ✨ Features
+## Features
 
 - **Automatic Capture**: Browser extension automatically captures job details when you apply
 - **Interactive Dashboard**: Beautiful React dashboard to view and manage all applications
@@ -457,20 +457,20 @@ Update `manifest.json` to include the new site:
 }]
 ```
 
-## 🔒 Security
+## Security
 
 This application implements industry-standard security practices:
 
-- ✅ **OAuth 2.0** with CSRF protection
-- ✅ **JWT tokens** with secure storage (cookies + localStorage for mobile)
-- ✅ **Rate limiting** to prevent abuse
-- ✅ **Input validation** and sanitization
-- ✅ **NoSQL injection** prevention
-- ✅ **Security headers** with Helmet.js
-- ✅ **HTTPS** enforced in production
-- ✅ **Mobile-friendly** authentication (iOS Safari compatible)
+- **OAuth 2.0** with CSRF protection
+- **JWT tokens** with secure storage (cookies + localStorage for mobile)
+- **Rate limiting** to prevent abuse
+- **Input validation** and sanitization
+- **NoSQL injection** prevention
+- **Security headers** with Helmet.js
+- **HTTPS** enforced in production
+- **Mobile-friendly** authentication (iOS Safari compatible)
 
-### 📖 Security Documentation
+### Security Documentation
 
 - **[Security Overview](./docs/security/SECURITY.md)** - Complete security features and implementation
 - **[OAuth Setup Guide](./docs/security/OAUTH_SETUP.md)** - Google OAuth 2.0 configuration
@@ -478,13 +478,13 @@ This application implements industry-standard security practices:
 - **[OAuth Security Details](./docs/security/OAUTH_SECURITY_IMPLEMENTATION.md)** - Detailed security measures
 - **[GCP Security Checklist](./docs/security/GCP_SECURITY_CHECKLIST.md)** - Production security checklist
 
-### 🚨 Mobile OAuth Issues?
+### Mobile OAuth Issues?
 
 If you're experiencing authentication issues on iOS/mobile devices, see the [Mobile OAuth Guide](./docs/guides/MOBILE_OAUTH_GUIDE.md) for troubleshooting steps.
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Deployment Guides
 
@@ -506,7 +506,7 @@ vercel
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Here's how you can help:
 
@@ -517,30 +517,30 @@ Contributions are welcome! Here's how you can help:
 5. **Open** a Pull Request
 
 ### Areas for Contribution
-- 🐛 Bug fixes
-- ✨ New features
-- 📝 Documentation improvements
-- 🎨 UI/UX enhancements
-- 🔒 Security improvements
+- Bug fixes
+- New features
+- Documentation improvements
+- UI/UX enhancements
+- Security improvements
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Kenneth John Rofuli**
 
-- 🌐 GitHub: [@KennethRofuli](https://github.com/KennethRofuli)
-- 💼 LinkedIn: [Kenneth John Rofuli](https://www.linkedin.com/in/kenneth-john-r-2674522a6)
+- GitHub: [@KennethRofuli](https://github.com/KennethRofuli)
+- LinkedIn: [Kenneth John Rofuli](https://www.linkedin.com/in/kenneth-john-r-2674522a6)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with the **MERN** stack
 - **MongoDB Atlas** for cloud database
@@ -550,18 +550,18 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ---
 
-## 📞 Support
+## Support
 
-- 📖 **Documentation**: [docs/README.md](./docs/README.md)
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/KennethRofuli/JobTracker/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/KennethRofuli/JobTracker/discussions)
+- **Documentation**: [docs/README.md](./docs/README.md)
+- **Bug Reports**: [GitHub Issues](https://github.com/KennethRofuli/JobTracker/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/KennethRofuli/JobTracker/discussions)
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you find it helpful! ⭐**
+**Star this repo if you find it helpful!**
 
-*Track every application and land your dream job!* 🚀
+*Track every application and land your dream job!*
 
 </div>

@@ -1,10 +1,10 @@
-# 📚 Job Tracker Documentation
+# Job Tracker Documentation
 
 Complete documentation for the Job Tracker application - a MERN stack job application tracking system with browser extension integration.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 New to Job Tracker? Start here:
 
@@ -14,9 +14,9 @@ New to Job Tracker? Start here:
 
 ---
 
-## 📖 Documentation Structure
+## Documentation Structure
 
-### 🛠️ Guides
+### Guides
 Step-by-step instructions for common tasks and features.
 
 | Guide | Description |
@@ -25,7 +25,7 @@ Step-by-step instructions for common tasks and features.
 | [Multi-User Guide](guides/MULTI_USER_GUIDE.md) | Managing multiple users and authentication |
 | [Testing Quick Start](guides/TESTING_QUICK_START.md) | Quick testing procedures for local development |
 
-### 🚢 Deployment
+### Deployment
 Production deployment guides and CI/CD setup.
 
 | Guide | Description |
@@ -33,7 +33,7 @@ Production deployment guides and CI/CD setup.
 | [CI/CD Guide](deployment/CI_CD_GUIDE.md) | GitHub Actions pipeline setup and automation |
 | [GCP Console Walkthrough](deployment/GCP_CONSOLE_WALKTHROUGH.md) | Deploying to Google Cloud Platform |
 
-### 🔒 Security
+### Security
 Security features, OAuth implementation, and best practices.
 
 | Document | Description |
@@ -47,7 +47,7 @@ Security features, OAuth implementation, and best practices.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Job Tracker Application
@@ -69,7 +69,7 @@ Job Tracker Application
 
 ---
 
-## 🔧 Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React** 18.x - UI framework
@@ -98,7 +98,7 @@ Job Tracker Application
 
 ---
 
-## 📝 API Documentation
+## API Documentation
 
 ### Authentication Endpoints
 
@@ -122,7 +122,7 @@ DELETE /api/applications/:id         - Delete application
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -132,18 +132,18 @@ DELETE /api/applications/:id         - Delete application
 
 ---
 
-## 📞 Support
+## Support
 
 - **Issues**: [GitHub Issues](https://github.com/KennethRofuli/JobTracker/issues)
-- **Documentation**: You are here! 📍
+- **Documentation**: You are here!
 - **Main README**: [Project README](../README.md)
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ---
 
-**Made with ❤️ by Kenneth John Rofuli**
+**Made with love by Kenneth John Rofuli**
