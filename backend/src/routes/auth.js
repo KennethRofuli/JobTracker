@@ -5,14 +5,27 @@ const crypto = require('crypto');
 const { authLimiter } = require('../middleware/rateLimiter');
 const router = express.Router();
 
+// Store for OAuth states (in production, use Redis or database)
+const oauthStates = new Map();
+
+// Clean up old states every 10 minutes
+setInterval(() => {
+    const now = Date.now();
+    for (const [state, timestamp] of oauthStates.entries()) {
+        if (now - timestamp > 10 * 60 * 1000) { // 10 minutes
+            oauthStates.delete(state);
+        }
+    }
+}, 10 * 60 * 1000);
+
 // @desc    Auth with Google
 // @route   GET /api/auth/google
 router.get('/google', authLimiter, (req, res, next) => {
     // Generate state parameter for CSRF protection
     const state = crypto.randomBytes(32).toString('hex');
     
-    // Store state in session (or encrypted cookie)
-    req.session.oauthState = state;
+    // Store state with timestamp (instead of session for mobile compatibility)
+    oauthStates.set(state, Date.now());
     
     // Pass state to Google OAuth
     passport.authenticate('google', { 
@@ -29,14 +42,18 @@ router.get(
     (req, res, next) => {
         // Validate state parameter (CSRF protection)
         const receivedState = req.query.state;
-        const storedState = req.session.oauthState;
         
-        if (!receivedState || receivedState !== storedState) {
+        if (!receivedState || !oauthStates.has(receivedState)) {
+            console.error('OAuth state validation failed:', { 
+                receivedState, 
+                hasState: oauthStates.has(receivedState),
+                userAgent: req.get('user-agent')
+            });
             return res.redirect(`${process.env.CLIENT_URL}/login?error=invalid_state`);
         }
         
         // Clear used state
-        delete req.session.oauthState;
+        oauthStates.delete(receivedState);
         
         next();
     },
@@ -57,7 +74,8 @@ router.get(
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            domain: process.env.NODE_ENV === 'production' ? process.env.COOKIE_DOMAIN : undefined
         });
 
         // Redirect to frontend without token in URL
