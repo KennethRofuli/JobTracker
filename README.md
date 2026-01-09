@@ -1,8 +1,27 @@
-# Auto Job Tracker
+# 📋 Job Tracker
 
 A comprehensive MERN stack application that automatically tracks your job applications using a browser extension. Say goodbye to manual spreadsheets and hello to automated job application tracking!
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-v14+-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/cloud/atlas)
+
+---
+
+## 📚 Documentation
+
+**Complete documentation is available in the [docs/](./docs) folder:**
+
+- 📖 **[Documentation Home](./docs/README.md)** - Complete documentation index
+- 🚀 **[Quick Start Guide](./docs/guides/TESTING_QUICK_START.md)** - Get started in 5 minutes
+- 📱 **[Mobile OAuth Guide](./docs/guides/MOBILE_OAUTH_GUIDE.md)** - Fix iOS authentication issues
+- 🚢 **[CI/CD Setup](./docs/deployment/CI_CD_GUIDE.md)** - Automated deployment with GitHub Actions
+- 🔒 **[Security Documentation](./docs/security/SECURITY.md)** - Security features and best practices
+
+---
+
+## ✨ Features
 
 - **Automatic Capture**: Browser extension automatically captures job details when you apply
 - **Interactive Dashboard**: Beautiful React dashboard to view and manage all applications
@@ -80,7 +99,7 @@ SESSION_SECRET=your_session_secret
 6. Replace `myFirstDatabase` with your database name (e.g., `jobtracker`)
 
 **Setting up Google OAuth:**
-See [OAUTH_SETUP.md](OAUTH_SETUP.md) for detailed instructions.
+See [OAuth Setup Guide](./docs/security/OAUTH_SETUP.md) for detailed instructions.
 
 **Generate secrets:**
 ```bash
@@ -438,58 +457,111 @@ Update `manifest.json` to include the new site:
 }]
 ```
 
-## Security
+## 🔒 Security
 
-### 🔒 OAuth Security Implementation
+This application implements industry-standard security practices:
 
-This application implements secure OAuth 2.0 flows with:
-- ✅ CSRF protection via state parameter validation
-- ✅ Secure httpOnly cookie-based authentication
-- ✅ No tokens in URLs or browser history
-- ✅ XSS protection with httpOnly cookies
-- ✅ SameSite cookie protection
-- ✅ Short-lived tokens (7 days)
+- ✅ **OAuth 2.0** with CSRF protection
+- ✅ **JWT tokens** with secure storage (cookies + localStorage for mobile)
+- ✅ **Rate limiting** to prevent abuse
+- ✅ **Input validation** and sanitization
+- ✅ **NoSQL injection** prevention
+- ✅ **Security headers** with Helmet.js
+- ✅ **HTTPS** enforced in production
+- ✅ **Mobile-friendly** authentication (iOS Safari compatible)
 
-**Important:** Recent security updates changed authentication from localStorage to secure cookies. See documentation below for details.
+### 📖 Security Documentation
 
-### Security Documentation
+- **[Security Overview](./docs/security/SECURITY.md)** - Complete security features and implementation
+- **[OAuth Setup Guide](./docs/security/OAUTH_SETUP.md)** - Google OAuth 2.0 configuration
+- **[OAuth Flow Diagram](./docs/security/OAUTH_FLOW_DIAGRAM.md)** - Visual authentication flow
+- **[OAuth Security Details](./docs/security/OAUTH_SECURITY_IMPLEMENTATION.md)** - Detailed security measures
+- **[GCP Security Checklist](./docs/security/GCP_SECURITY_CHECKLIST.md)** - Production security checklist
 
-- **[GCP_SECURITY_CHECKLIST.md](GCP_SECURITY_CHECKLIST.md)** - Step-by-step Google Cloud Platform security configuration
-- **[OAUTH_SECURITY_IMPLEMENTATION.md](OAUTH_SECURITY_IMPLEMENTATION.md)** - Detailed security implementation guide
-- **[SECURITY_IMPLEMENTATION_SUMMARY.md](SECURITY_IMPLEMENTATION_SUMMARY.md)** - Quick overview of security changes
-- **[TESTING_QUICK_START.md](TESTING_QUICK_START.md)** - 5-minute local testing guide
-- **[SECURITY.md](SECURITY.md)** - General security best practices
+### 🚨 Mobile OAuth Issues?
 
-### For New Setup
-
-If you're setting up this project for the first time:
-1. Follow [TESTING_QUICK_START.md](TESTING_QUICK_START.md) to test locally
-2. Complete [GCP_SECURITY_CHECKLIST.md](GCP_SECURITY_CHECKLIST.md) for production deployment
-3. Review [OAUTH_SECURITY_IMPLEMENTATION.md](OAUTH_SECURITY_IMPLEMENTATION.md) for troubleshooting
-
-## Contributing
-
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
-
-## License
-
-This project is open source and available for personal use.
-
-## Author
-
-**Kenneth Rofuli**
-- GitHub: [@KennethRofuli](https://github.com/KennethRofuli)
-
-## Acknowledgments
-
-- Built with MERN stack
-- MongoDB Atlas for cloud database
-- Chrome Extensions API
-- Passport.js for OAuth
+If you're experiencing authentication issues on iOS/mobile devices, see the [Mobile OAuth Guide](./docs/guides/MOBILE_OAUTH_GUIDE.md) for troubleshooting steps.
 
 ---
 
-Track every application and land your dream job!
+## 🚀 Deployment
+
+### Production Deployment Guides
+
+- **[CI/CD with GitHub Actions](./docs/deployment/CI_CD_GUIDE.md)** - Automated testing and deployment
+- **[Google Cloud Platform](./docs/deployment/GCP_CONSOLE_WALKTHROUGH.md)** - Deploy to GCP step-by-step
+
+### Quick Deploy Options
+
+**Frontend (Vercel):**
+```bash
+cd frontend
+vercel
+```
+
+**Backend (Render/Railway/Fly.io):**
+- Connect your GitHub repository
+- Set environment variables
+- Deploy automatically on push
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/AmazingFeature`)
+3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** to the branch (`git push origin feature/AmazingFeature`)
+5. **Open** a Pull Request
+
+### Areas for Contribution
+- 🐛 Bug fixes
+- ✨ New features
+- 📝 Documentation improvements
+- 🎨 UI/UX enhancements
+- 🔒 Security improvements
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Kenneth John Rofuli**
+
+- 🌐 GitHub: [@KennethRofuli](https://github.com/KennethRofuli)
+- 💼 LinkedIn: [Kenneth John Rofuli](https://www.linkedin.com/in/kenneth-john-r-2674522a6)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with the **MERN** stack
+- **MongoDB Atlas** for cloud database
+- **Passport.js** for OAuth authentication
+- **Chrome Extensions API** for browser integration
+- Inspired by the need for better job application tracking
+
+---
+
+## 📞 Support
+
+- 📖 **Documentation**: [docs/README.md](./docs/README.md)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/KennethRofuli/JobTracker/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/KennethRofuli/JobTracker/discussions)
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it helpful! ⭐**
+
+*Track every application and land your dream job!* 🚀
+
+</div>
