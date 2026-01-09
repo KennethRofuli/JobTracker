@@ -31,9 +31,13 @@ function App() {
           setTimeout(() => reject(new Error('timeout')), 10000)
         );
         
-        // With cookie-based auth, no need to get token from localStorage
+        // Try to get token from localStorage (mobile/cross-origin) or cookie (desktop)
+        const token = localStorage.getItem('auth_token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        
         const authPromise = axios.get(`${API_URL}/auth/me`, {
-          withCredentials: true // Send cookies with request
+          headers,
+          withCredentials: true // Send cookies with request as fallback
         });
         
         const response = await Promise.race([authPromise, timeoutPromise]);
@@ -48,6 +52,8 @@ function App() {
           setConnectionError(true);
           setLoading(false);
         } else if (err.response?.status === 401) {
+          // Clear invalid token
+          localStorage.removeItem('auth_token');
           navigate('/login');
         } else {
           setConnectionError(true);
@@ -62,13 +68,18 @@ function App() {
   const fetchApplications = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem('auth_token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
       const response = await axios.get(`${API_URL}/applications`, {
-        withCredentials: true // Send cookies with request
+        headers,
+        withCredentials: true // Send cookies with request as fallback
       });
       setApplications(response.data.data);
       setError(null);
     } catch (err) {
       if (err.response?.status === 401) {
+        localStorage.removeItem('auth_token');
         navigate('/login');
       } else {
         setError('Failed to load applications. Make sure backend is running on port 5000.');
@@ -85,7 +96,11 @@ function App() {
     }
     
     try {
+      const token = localStorage.getItem('auth_token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
       await axios.delete(`${API_URL}/applications/${id}`, {
+        headers,
         withCredentials: true
       });
       setApplications(applications.filter(app => app._id !== id));
@@ -97,10 +112,13 @@ function App() {
 
   const updateStatus = async (id, newStatus) => {
     try {
+      const token = localStorage.getItem('auth_token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
       const response = await axios.put(
         `${API_URL}/applications/${id}`, 
         { status: newStatus },
-        { withCredentials: true }
+        { headers, withCredentials: true }
       );
       setApplications(applications.map(app => 
         app._id === id ? response.data.data : app
@@ -113,10 +131,13 @@ function App() {
 
   const updateNotes = async (id, notes) => {
     try {
+      const token = localStorage.getItem('auth_token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
       const response = await axios.put(
         `${API_URL}/applications/${id}`, 
         { notes },
-        { withCredentials: true }
+        { headers, withCredentials: true }
       );
       setApplications(applications.map(app => 
         app._id === id ? response.data.data : app
@@ -129,13 +150,20 @@ function App() {
 
   const handleLogout = async () => {
     try {
+      const token = localStorage.getItem('auth_token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
       // Call backend to clear cookie
       await axios.post(`${API_URL}/auth/logout`, {}, {
+        headers,
         withCredentials: true
       });
     } catch (err) {
       console.error('Logout error:', err);
     }
+    
+    // Clear localStorage token
+    localStorage.removeItem('auth_token');
     
     // Notify extension to logout via postMessage (more reliable than extension ID)
     window.postMessage({ 
@@ -150,12 +178,20 @@ function App() {
 
   const copyTokenForExtension = async () => {
     try {
-      // Get token from backend
-      const response = await axios.get(`${API_URL}/auth/token`, {
-        withCredentials: true
-      });
+      // Try to get token from localStorage first
+      let token = localStorage.getItem('auth_token');
       
-      const token = response.data.token;
+      if (!token) {
+        // Fallback: Get token from backend
+        const authToken = localStorage.getItem('auth_token');
+        const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
+        
+        const response = await axios.get(`${API_URL}/auth/token`, {
+          headers,
+          withCredentials: true
+        });
+        token = response.data.token;
+      }
       
       // Copy to clipboard
       await navigator.clipboard.writeText(token);

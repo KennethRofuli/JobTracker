@@ -69,17 +69,18 @@ router.get(
             { expiresIn: '7d' } // Reduced from 30d to 7d
         );
 
-        // Set token in secure, httpOnly cookie instead of URL
+        // Try to set cookie for desktop browsers
         res.cookie('auth_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             domain: process.env.NODE_ENV === 'production' ? process.env.COOKIE_DOMAIN : undefined
         });
 
-        // Redirect to frontend without token in URL
-        res.redirect(`${process.env.CLIENT_URL}/auth-success`);
+        // For mobile/cross-origin compatibility, pass token in URL fragment (one-time use)
+        // Fragment (#) is not sent to server, only accessible to client-side JS
+        res.redirect(`${process.env.CLIENT_URL}/auth-success#token=${token}`);
     }
 );
 

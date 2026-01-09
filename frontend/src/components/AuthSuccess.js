@@ -9,26 +9,37 @@ function AuthSuccess() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // With cookie-based auth, token is automatically sent in cookies
-    // Just verify authentication worked
     const verifyAuth = async () => {
       try {
-        // This will use the cookie automatically
+        // Extract token from URL fragment (for mobile/cross-origin compatibility)
+        const hash = window.location.hash;
+        let token = null;
+        
+        if (hash && hash.includes('token=')) {
+          token = hash.split('token=')[1].split('&')[0];
+          console.log('Token extracted from URL fragment');
+          
+          // Store in localStorage for mobile/cross-origin scenarios
+          localStorage.setItem('auth_token', token);
+          
+          // Clear the URL fragment for security
+          window.history.replaceState(null, '', window.location.pathname);
+        } else {
+          // Try to get token from localStorage (if already stored)
+          token = localStorage.getItem('auth_token');
+        }
+        
+        // Verify authentication with token
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const response = await axios.get(`${API_URL}/auth/me`, {
-          withCredentials: true
+          headers,
+          withCredentials: true // Still try cookies as fallback
         });
         
         console.log('Authentication successful:', response.data);
         
-        // Get JWT token for extension
-        try {
-          const tokenResponse = await axios.get(`${API_URL}/auth/token`, {
-            withCredentials: true
-          });
-          
-          const token = tokenResponse.data.token;
-          
-          // Send token to extension via postMessage (extension content script will listen)
+        // Send token to extension via postMessage (extension content script will listen)
+        if (token) {
           window.postMessage({ 
             type: 'JOB_TRACKER_LOGIN',
             token: token,
@@ -36,8 +47,6 @@ function AuthSuccess() {
           }, '*');
           
           console.log('Login token broadcast to extension');
-        } catch (err) {
-          console.log('Could not send token to extension:', err.message);
         }
         
         // Redirect to dashboard
