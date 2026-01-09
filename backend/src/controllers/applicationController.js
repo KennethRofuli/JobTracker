@@ -130,6 +130,8 @@ exports.updateApplication = async (req, res) => {
             data: application
         });
     } catch (error) {
+        console.error('Update error:', error.message);
+        console.error('Request body:', req.body);
         res.status(400).json({
             success: false,
             error: error.message

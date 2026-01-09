@@ -1,11 +1,13 @@
 import React from 'react';
 
 function Stats({ applications, filterStatus, onFilterChange }) {
-  const total = applications.length;
-  const applied = applications.filter(app => app.status === 'Applied').length;
-  const interviewing = applications.filter(app => app.status === 'Interviewing').length;
-  const offered = applications.filter(app => app.status === 'Offered').length;
-  const rejected = applications.filter(app => app.status === 'Rejected').length;
+  // Exclude 'Ignored' status from total count
+  const activeApplications = applications.filter(app => app.status !== 'Ignored');
+  const total = activeApplications.length;
+  const applied = activeApplications.filter(app => app.status === 'Applied').length;
+  const interviewing = activeApplications.filter(app => app.status === 'Interviewing').length;
+  const offered = activeApplications.filter(app => app.status === 'Offered').length;
+  const rejected = activeApplications.filter(app => app.status === 'Rejected').length;
 
   const stats = [
     { label: 'Total', value: total, icon: '📊', color: '#0066cc', filterValue: 'All' },

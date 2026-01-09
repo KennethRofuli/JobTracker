@@ -32,7 +32,7 @@ const applicationValidation = [
     
     body('status')
         .optional()
-        .isIn(['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted'])
+        .isIn(['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted', 'Ignored'])
         .withMessage('Invalid status'),
     
     body('date_applied')
@@ -74,7 +74,7 @@ const updateValidation = [
     
     body('status')
         .optional()
-        .isIn(['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted'])
+        .isIn(['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted', 'Ignored'])
         .withMessage('Invalid status'),
     
     body('date_applied')

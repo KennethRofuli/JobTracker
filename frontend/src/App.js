@@ -317,13 +317,24 @@ function App() {
         />
 
         <div className="controls">
-          <input
-            type="text"
-            placeholder="🔍 Search company or job title..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="🔍 Search company or job title..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="clear-search-btn"
+                title="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
 
           <select
             value={filterStatus}

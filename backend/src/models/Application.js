@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+// Clear cached model to ensure fresh schema
+if (mongoose.models.Application) {
+  delete mongoose.models.Application;
+}
+
 const applicationSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -38,7 +43,7 @@ const applicationSchema = mongoose.Schema({
     },
     status:{
         type: String,
-        enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted'],
+        enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted', 'Ignored'],
         default: 'Applied'
     },
     notes: {

@@ -15,7 +15,8 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
       'Interviewing': 'status-interviewing',
       'Offered': 'status-offered',
       'Rejected': 'status-rejected',
-      'Accepted': 'status-accepted'
+      'Accepted': 'status-accepted',
+      'Ignored': 'status-ignored'
     };
     return statusClasses[status] || '';
   };
@@ -76,7 +77,21 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
                   {app.notes && ' 📝'}
                 </span>
               </td>
-              <td className="location">{app.location || '-'}</td>
+              <td className="location">
+                {app.location ? (
+                  <a 
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(app.location)}`}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="location-link"
+                    title="Open in Google Maps"
+                  >
+                    {app.location} 📍
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </td>
               <td>{formatDate(app.date_applied)}</td>
               <td>
                 <span className="source-badge">
@@ -94,6 +109,7 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
                   <option value="Offered">Offered</option>
                   <option value="Rejected">Rejected</option>
                   <option value="Accepted">Accepted</option>
+                  <option value="Ignored">Ignored</option>
                 </select>
               </td>
               <td>

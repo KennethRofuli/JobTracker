@@ -191,13 +191,41 @@
   flex-wrap: wrap;
 }
 
-.search-input {
+.search-container {
   flex: 1;
   min-width: 250px;
-  padding: 0.75rem 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
   border: 1px solid #e8e8e8;
   border-radius: 4px;
   font-size: 0.95rem;
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.clear-search-btn:hover {
+  color: #333;
 }
 
 .filter-select {
@@ -445,6 +473,12 @@
   color: #2196f3;
 }
 
+.status-ignored {
+  border-color: #bdbdbd;
+  color: #9e9e9e;
+  opacity: 0.7;
+}
+
 .delete-btn {
   background: none;
   border: none;
@@ -677,7 +711,7 @@
     flex-direction: column;
   }
 
-  .search-input,
+  .search-container,
   .filter-select,
   .refresh-btn {
     width: 100%;
@@ -705,6 +739,18 @@
 .job-title-link:hover {
   background-color: #e8f0fe;
   color: #1a73e8;
+}
+
+/* Location link to Google Maps */
+.location-link {
+  color: #5f6368;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.location-link:hover {
+  color: #1a73e8;
+  text-decoration: underline;
 }
 
 /* Job Title with Notes */
