@@ -1,9 +1,8 @@
 import React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import '../App.css';
 
 function Login() {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const error = searchParams.get('error');
 
