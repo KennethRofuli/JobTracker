@@ -372,6 +372,7 @@
 .applications-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .applications-table thead {
@@ -389,9 +390,48 @@
   border-bottom: 1px solid #e8e8e8;
 }
 
+/* Fixed column widths for consistent alignment */
+.applications-table th:nth-child(1),
+.applications-table td:nth-child(1) {
+  width: 15%;
+}
+
+.applications-table th:nth-child(2),
+.applications-table td:nth-child(2) {
+  width: 18%;
+}
+
+.applications-table th:nth-child(3),
+.applications-table td:nth-child(3) {
+  width: 20%;
+}
+
+.applications-table th:nth-child(4),
+.applications-table td:nth-child(4) {
+  width: 12%;
+}
+
+.applications-table th:nth-child(5),
+.applications-table td:nth-child(5) {
+  width: 12%;
+}
+
+.applications-table th:nth-child(6),
+.applications-table td:nth-child(6) {
+  width: 15%;
+}
+
+.applications-table th:nth-child(7),
+.applications-table td:nth-child(7) {
+  width: 8%;
+}
+
 .applications-table td {
   padding: 1rem;
   border-bottom: 1px solid #f5f5f5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .applications-table tbody tr {
