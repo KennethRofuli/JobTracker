@@ -801,6 +801,10 @@
   padding: 2px 4px;
   border-radius: 4px;
   display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .job-title-link:hover {

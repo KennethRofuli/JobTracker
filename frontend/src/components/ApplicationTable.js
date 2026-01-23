@@ -71,7 +71,7 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
                 <span 
                   className="job-title-link"
                   onClick={() => setSelectedApp(app)}
-                  title={app.notes ? "Click to view/edit notes" : "Click to add notes"}
+                  title={`${app.job_title}${app.notes ? ' (Click to view/edit notes)' : ' (Click to add notes)'}`}
                 >
                   {app.job_title}
                   {app.notes && ' 📝'}
