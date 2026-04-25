@@ -178,7 +178,7 @@ async function checkPageStatus() {
     const statusText = document.getElementById('statusText');
     
     // Check if on supported site
-    const supportedSites = ['indeed.com', 'linkedin.com', 'glassdoor.com', 'onlinejobs.ph'];
+    const supportedSites = ['indeed.com', 'linkedin.com', 'glassdoor.com', 'onlinejobs.ph', 'jobright.ai'];
     const isSupported = supportedSites.some(site => tab.url.includes(site));
     
     if (!isSupported) {
@@ -208,11 +208,11 @@ async function performAutoCapture() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   
   // Check if we're on a supported site
-  const supportedSites = ['indeed.com', 'linkedin.com', 'glassdoor.com', 'onlinejobs.ph'];
+  const supportedSites = ['indeed.com', 'linkedin.com', 'glassdoor.com', 'onlinejobs.ph', 'jobright.ai'];
   const isSupported = supportedSites.some(site => tab.url.includes(site));
   
   if (!isSupported) {
-    showMessage('⚠️ Not on a supported job site. Supported: Indeed, LinkedIn, Glassdoor, OnlineJobs.ph', 'warning');
+    showMessage('⚠️ Not on a supported job site. Supported: Indeed, LinkedIn, Glassdoor, OnlineJobs.ph, Jobright.ai', 'warning');
     document.getElementById('retryCapture').style.display = 'none';
     return;
   }
@@ -272,6 +272,8 @@ async function performAutoCapture() {
       document.getElementById('source').value = 'Glassdoor';
     } else if (tab.url.includes('onlinejobs.ph')) {
       document.getElementById('source').value = 'OnlineJobs.ph';
+    } else if (tab.url.includes('jobright.ai')) {
+      document.getElementById('source').value = 'Jobright.ai';
     }
     
     showMessage('✅ Data captured! Review and click Save.', 'success');

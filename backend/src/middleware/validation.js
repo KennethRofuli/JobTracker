@@ -27,7 +27,7 @@ const applicationValidation = [
     
     body('source')
         .optional()
-        .isIn(['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'OnlineJobs.ph'])
+        .isIn(['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'OnlineJobs.ph', 'Jobright.ai'])
         .withMessage('Invalid source'),
     
     body('status')
@@ -69,7 +69,7 @@ const updateValidation = [
     
     body('source')
         .optional()
-        .isIn(['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'OnlineJobs.ph'])
+        .isIn(['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'OnlineJobs.ph', 'Jobright.ai'])
         .withMessage('Invalid source'),
     
     body('status')

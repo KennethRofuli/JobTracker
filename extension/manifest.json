@@ -39,7 +39,8 @@
         "*://*.glassdoor.com/*/jobs/*",
         "*://*.onlinejobs.ph/jobseekers/job/*",
         "*://*.onlinejobs.ph/jobseekers/jobview/*",
-        "*://*.onlinejobs.ph/jobs/*"
+        "*://*.onlinejobs.ph/jobs/*",
+        "*://*.jobright.ai/*"
       ],
       "js": ["content.js"]
     },

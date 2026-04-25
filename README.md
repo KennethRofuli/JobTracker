@@ -30,7 +30,7 @@ A comprehensive MERN stack application that automatically tracks your job applic
 - **Duplicate Prevention**: Intelligent system prevents duplicate entries
 - **Quick Access**: Click company names to revisit job postings
 - **Location Tracking**: Automatically captures job location information
-- **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, and OnlineJobs.ph
+- **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, OnlineJobs.ph, and Jobright.ai
 - **Google OAuth**: Secure authentication with your Google account
 
 ## Tech Stack
@@ -190,7 +190,7 @@ This is the **most reliable method** for capturing job applications:
 
 **⚠️ Note: Auto-capture is unreliable** due to frequent website changes. Use as a backup only.
 
-1. **Navigate** to a supported job site (Indeed, LinkedIn, Glassdoor, OnlineJobs.ph)
+1. **Navigate** to a supported job site (Indeed, LinkedIn, Glassdoor, OnlineJobs.ph, Jobright.ai)
 2. **Open** a job posting
 3. **Click** the "Apply" or "Easy Apply" button on the job posting
 4. The extension *may* automatically capture and save the job details
@@ -321,6 +321,12 @@ Click any stat card to instantly filter your applications:
 - Auto-capture on Easy Apply button
 
 ### Glassdoor
+- Company name
+- Job title
+- Location
+- Auto-capture on Apply button
+
+### Jobright.ai
 - Company name
 - Job title
 - Location

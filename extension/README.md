@@ -24,7 +24,7 @@
 ## 📋 How to Use
 
 ### Method 1: Auto-Capture
-1. Navigate to a job posting on LinkedIn, Indeed, or Glassdoor
+1. Navigate to a job posting on LinkedIn, Indeed, Glassdoor, or Jobright.ai
 2. Click the extension icon in your browser
 3. Click "🎯 Auto-Capture from Page"
 4. Review the captured data
@@ -37,7 +37,7 @@
 4. Click "Save Application"
 
 ### Method 3: Auto-Save on Apply (Advanced)
-- When you click "Apply" on LinkedIn/Indeed, the extension automatically detects and saves the job
+- When you click "Apply" on LinkedIn, Indeed, or Jobright.ai, the extension automatically detects and saves the job
 - You'll see a browser notification confirming the save
 
 ## ⚠️ Multiple Users on Same Computer
@@ -67,5 +67,7 @@
 - LinkedIn Jobs
 - Indeed
 - Glassdoor
+- OnlineJobs.ph
+- Jobright.ai
 
 More sites can be added by updating the selectors in `content.js`!

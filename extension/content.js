@@ -126,6 +126,26 @@ function extractJobInfo() {
     }
   }
   
+  // Jobright.ai
+  else if (url.includes('jobright.ai')) {
+    company = document.querySelector('[class*="company"]')?.innerText.trim() ||
+              document.querySelector('.job-company')?.innerText.trim() ||
+              document.querySelector('.company-name')?.innerText.trim() ||
+              document.querySelector('[data-test="company"]')?.innerText.trim() ||
+              '';
+
+    title = document.querySelector('h1')?.innerText.trim() ||
+            document.querySelector('[class*="job-title"]')?.innerText.trim() ||
+            document.querySelector('.job-title')?.innerText.trim() ||
+            document.querySelector('[data-test="job-title"]')?.innerText.trim() ||
+            '';
+
+    location = document.querySelector('[class*="location"]')?.innerText.trim() ||
+               document.querySelector('.job-location')?.innerText.trim() ||
+               document.querySelector('[data-test="location"]')?.innerText.trim() ||
+               '';
+  }
+  
   return { company, title, location };
 }
 
@@ -204,5 +224,6 @@ function getSource() {
   if (url.includes('indeed.com')) return 'Indeed';
   if (url.includes('glassdoor.com')) return 'Glassdoor';
   if (url.includes('onlinejobs.ph')) return 'OnlineJobs.ph';
+  if (url.includes('jobright.ai')) return 'Jobright.ai';
   return 'Manual';
 }
