@@ -11,6 +11,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Extract job info from current page
+function cleanJobrightCompany(raw) {
+  if (!raw) return '';
+  let company = raw.trim();
+  company = company.split('·')[0].split('•')[0].split('\n')[0].trim();
+  company = company.replace(/\s+\d+\s+(hours?|hrs?|minutes?|mins?|days?)\s+ago$/i, '').trim();
+  return company;
+}
+
 function extractJobInfo() {
   const url = window.location.href;
   let company = '';
@@ -128,11 +136,13 @@ function extractJobInfo() {
   
   // Jobright.ai
   else if (url.includes('jobright.ai')) {
-    company = document.querySelector('[class*="company"]')?.innerText.trim() ||
-              document.querySelector('.job-company')?.innerText.trim() ||
-              document.querySelector('.company-name')?.innerText.trim() ||
-              document.querySelector('[data-test="company"]')?.innerText.trim() ||
-              '';
+    company = cleanJobrightCompany(
+      document.querySelector('[class*="company"]')?.innerText.trim() ||
+      document.querySelector('.job-company')?.innerText.trim() ||
+      document.querySelector('.company-name')?.innerText.trim() ||
+      document.querySelector('[data-test="company"]')?.innerText.trim() ||
+      ''
+    );
 
     title = document.querySelector('h1')?.innerText.trim() ||
             document.querySelector('[class*="job-title"]')?.innerText.trim() ||
