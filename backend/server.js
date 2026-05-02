@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const { MongoStore } = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -10,6 +10,16 @@ const morgan = require('morgan');
 
 // Load environment variables FIRST before importing other modules
 dotenv.config();
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+});
+
+console.log('Starting Job Tracker backend');
 
 const connectDB = require('./src/config/db');
 const passport = require('./src/config/passport');
@@ -113,12 +123,18 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 const init = async () => {
+    console.log('init() starting');
     await connectDB();
+    console.log('Database connected');
     notificationScheduler.start();
+    console.log('Notification scheduler started');
     app.listen(PORT, () => {
         logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
         console.log(`Server running on port ${PORT}`);
     });
 };
 
-init();
+init().catch((error) => {
+    console.error('Initialization failed:', error);
+    process.exit(1);
+});
