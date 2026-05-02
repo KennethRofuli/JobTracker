@@ -50,6 +50,10 @@ const applicationSchema = mongoose.Schema({
         type: String,
         trim: true,
         default: ''
+    },
+    followUpSentAt: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true

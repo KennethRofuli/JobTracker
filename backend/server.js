@@ -16,13 +16,12 @@ const logger = require('./src/config/logger');
 const { apiLimiter } = require('./src/middleware/rateLimiter');
 const applicationRoutes = require('./src/routes/applications');
 const authRoutes = require('./src/routes/auth');
+const notificationScheduler = require('./src/services/notificationScheduler');
 
 const app = express();
 
 // Trust first proxy (required for Render, Heroku, etc.)
 app.set('trust proxy', 1);
-
-connectDB();
 
 // Security Middleware
 // Helmet helps secure Express apps by setting various HTTP headers
@@ -107,7 +106,14 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
-    console.log(`Server running on port ${PORT}`);
-})
+
+const init = async () => {
+    await connectDB();
+    notificationScheduler.start();
+    app.listen(PORT, () => {
+        logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+        console.log(`Server running on port ${PORT}`);
+    });
+};
+
+init();

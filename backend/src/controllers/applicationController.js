@@ -1,4 +1,6 @@
 const Application = require('../models/Application');
+const emailService = require('../services/emailService');
+const logger = require('../config/logger');
 
 // @desc    Get all applications for logged in user
 // @route   GET /api/applications
@@ -76,6 +78,15 @@ exports.createApplication = async (req, res) => {
             ...req.body,
             userId: req.user._id
         });
+
+        if (req.user?.email) {
+            emailService.sendNewApplicationEmail(req.user.email, application)
+                .catch(error => logger.error('Unable to send new application confirmation email', {
+                    email: req.user.email,
+                    error: error.message
+                }));
+        }
+
         res.status(201).json({
             success: true,
             data: application
