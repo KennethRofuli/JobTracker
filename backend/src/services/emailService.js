@@ -56,8 +56,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
         return result;
     } catch (error) {
         logger.error('Failed to send email', { error: error.message, to, subject });
-        // Don't throw - allow application to continue
-        return null;
+        throw error;
     }
 };
 

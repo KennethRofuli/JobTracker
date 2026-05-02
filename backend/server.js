@@ -28,6 +28,7 @@ const { apiLimiter } = require('./src/middleware/rateLimiter');
 const applicationRoutes = require('./src/routes/applications');
 const authRoutes = require('./src/routes/auth');
 const notificationScheduler = require('./src/services/notificationScheduler');
+const emailService = require('./src/services/emailService');
 
 const app = express();
 
@@ -97,6 +98,29 @@ app.use('/api/', apiLimiter);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/applications', applicationRoutes);
+
+if (process.env.ENABLE_DEBUG_ROUTES === 'true') {
+    app.get('/debug/send-test-email', async (req, res) => {
+        const to = req.query.to || process.env.DEBUG_EMAIL_RECIPIENT;
+        if (!to) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing recipient. Add ?to=you@example.com or set DEBUG_EMAIL_RECIPIENT.'
+            });
+        }
+
+        try {
+            await emailService.sendEmail({
+                to,
+                subject: 'Job Tracker Test Email',
+                text: 'This is a test email sent from the Job Tracker backend.'
+            });
+            return res.json({ success: true, message: `Test email sent to ${to}` });
+        } catch (error) {
+            return res.status(500).json({ success: false, error: error.message });
+        }
+    });
+}
 
 app.get('/', (req, res) =>{
     res.json({message: 'API is running'})
