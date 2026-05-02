@@ -22,31 +22,43 @@ if (isConfigured) {
         }
     });
 
-    transporter.verify((error, success) => {
-        if (error) {
-            logger.error('Email transporter verification failed', { error: error.message });
-        } else {
-            logger.info('Email transporter is configured and ready');
-        }
-    });
+    // Verify transporter asynchronously without blocking startup
+    setTimeout(() => {
+        transporter.verify((error, success) => {
+            if (error) {
+                logger.error('Email transporter verification failed', { error: error.message });
+            } else {
+                logger.info('Email transporter is configured and ready');
+            }
+        });
+    }, 5000); // Delay verification to avoid blocking startup
 } else {
     logger.warn('Email service is not configured. Set EMAIL_SMTP_HOST, EMAIL_SMTP_USER, and EMAIL_SMTP_PASS.');
 }
 
 const sendEmail = async ({ to, subject, text, html }) => {
     if (!isConfigured || !transporter) {
-        throw new Error('Email service is not configured');
+        logger.warn('Email service not configured, skipping email send');
+        return;
     }
 
-    const message = {
-        from,
-        to,
-        subject,
-        text,
-        html
-    };
+    try {
+        const message = {
+            from,
+            to,
+            subject,
+            text,
+            html
+        };
 
-    return transporter.sendMail(message);
+        const result = await transporter.sendMail(message);
+        logger.info('Email sent successfully', { to, subject });
+        return result;
+    } catch (error) {
+        logger.error('Failed to send email', { error: error.message, to, subject });
+        // Don't throw - allow application to continue
+        return null;
+    }
 };
 
 const formatApplicationDetails = (application) => {
