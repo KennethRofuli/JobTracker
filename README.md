@@ -88,7 +88,28 @@ GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 JWT_SECRET=your_jwt_secret
 SESSION_SECRET=your_session_secret
+
+# Optional email notification settings
+EMAIL_SMTP_HOST=smtp.example.com
+EMAIL_SMTP_PORT=587
+EMAIL_SMTP_SECURE=false
+EMAIL_SMTP_USER=your-smtp-user
+EMAIL_SMTP_PASS=your-smtp-password
+EMAIL_FROM="Job Tracker <no-reply@example.com>"
+
+# Optional scheduler settings
+DAILY_SUMMARY_CRON=0 8 * * *
+FOLLOW_UP_CRON=0 9 * * *
+SCHEDULER_TIMEZONE=UTC
 ```
+
+**How notifications work:**
+
+- When a new application is created, the backend sends a confirmation email to the authenticated user's email using SMTP.
+- A scheduler runs daily and sends a summary email containing all applications and statuses to each user.
+- Another daily scheduler checks for applications that were applied at least 7 days ago and still have status `Applied`, then sends follow-up reminder emails.
+- The `Application` model now tracks `followUpSentAt` so each reminder is only sent once.
+- The scheduler starts automatically when the backend server starts, after the MongoDB connection is established.
 
 **Getting your MongoDB URI:**
 1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)

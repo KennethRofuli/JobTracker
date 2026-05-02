@@ -84,6 +84,7 @@ Job Tracker Application
 - **Mongoose** - ODM
 - **Passport.js** - OAuth authentication
 - **JWT** - Token-based auth
+- **Email Notifications** - SMTP-based message delivery for new application confirmation, 7-day follow-ups, and daily summaries
 
 ### Security
 - **Helmet.js** - Security headers
