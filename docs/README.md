@@ -84,7 +84,8 @@ Job Tracker Application
 - **Mongoose** - ODM
 - **Passport.js** - OAuth authentication
 - **JWT** - Token-based auth
-- **Email Notifications** - SMTP-based message delivery for new application confirmation, 7-day follow-ups, and daily summaries
+- **Email Notifications** - SendGrid Web API-based delivery for new application confirmation, 7-day follow-ups, and daily summaries
+  - **SendGrid recommended** for production on cloud hosts like Render
 
 ### Security
 - **Helmet.js** - Security headers

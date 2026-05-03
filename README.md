@@ -90,11 +90,10 @@ JWT_SECRET=your_jwt_secret
 SESSION_SECRET=your_session_secret
 
 # Optional email notification settings
-EMAIL_SMTP_HOST=smtp.example.com
-EMAIL_SMTP_PORT=587
-EMAIL_SMTP_SECURE=false
-EMAIL_SMTP_USER=your-smtp-user
-EMAIL_SMTP_PASS=your-smtp-password
+# Use the SendGrid Web API for cloud deployment.
+# SENDGRID_API_KEY=SG.xxxxxxxx
+# EMAIL_FROM="Job Tracker <jobtracker.notify@gmail.com>"
+SENDGRID_API_KEY=your-sendgrid-api-key
 EMAIL_FROM="Job Tracker <no-reply@example.com>"
 
 # Optional scheduler settings
@@ -121,6 +120,15 @@ SCHEDULER_TIMEZONE=UTC
 
 **Setting up Google OAuth:**
 See [OAuth Setup Guide](./docs/security/OAUTH_SETUP.md) for detailed instructions.
+
+**Using SendGrid for email notifications:**
+1. Create a SendGrid account at https://sendgrid.com/
+2. In the SendGrid dashboard, go to **Settings > API Keys**
+3. Create a new API key with **Full Access** or at least **Mail Send**
+4. Copy the generated key and save it securely
+5. In Render, set the following environment variables:
+   - `SENDGRID_API_KEY=<your-sendgrid-api-key>`
+   - `EMAIL_FROM="Job Tracker <no-reply@example.com>"`
 
 **Generate secrets:**
 ```bash

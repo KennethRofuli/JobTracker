@@ -1,45 +1,38 @@
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const logger = require('../config/logger');
 
-const host = process.env.EMAIL_SMTP_HOST;
-const port = Number(process.env.EMAIL_SMTP_PORT || 587);
-const secure = process.env.EMAIL_SMTP_SECURE === 'true';
-const user = process.env.EMAIL_SMTP_USER;
-const pass = process.env.EMAIL_SMTP_PASS;
-const from = process.env.EMAIL_FROM || user;
+const sendGridApiKey = process.env.SENDGRID_API_KEY || process.env.EMAIL_SMTP_PASS;
+const from = process.env.EMAIL_FROM || process.env.SENDGRID_FROM;
+const isConfigured = Boolean(sendGridApiKey && from);
 
-const isConfigured = Boolean(host && user && pass);
-
-let transporter;
 if (isConfigured) {
-    transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure,
-        auth: {
-            user,
-            pass
+    sgMail.setApiKey(sendGridApiKey);
+    setTimeout(async () => {
+        try {
+            await sgMail.send({
+                to: from,
+                from,
+                subject: 'SendGrid configuration test',
+                text: 'SendGrid is configured and ready to send email from Job Tracker.'
+            });
+            logger.info('SendGrid is configured and ready');
+        } catch (error) {
+            logger.error('SendGrid verification failed', { error: error.message });
         }
-    });
-
-    // Verify transporter asynchronously without blocking startup
-    setTimeout(() => {
-        transporter.verify((error, success) => {
-            if (error) {
-                logger.error('Email transporter verification failed', { error: error.message });
-            } else {
-                logger.info('Email transporter is configured and ready');
-            }
-        });
-    }, 5000); // Delay verification to avoid blocking startup
+    }, 5000);
 } else {
-    logger.warn('Email service is not configured. Set EMAIL_SMTP_HOST, EMAIL_SMTP_USER, and EMAIL_SMTP_PASS.');
+    logger.warn('Email service is not configured. Set SENDGRID_API_KEY and EMAIL_FROM.');
 }
 
+const formatHtml = (text) => {
+    return text ? text.replace(/\n/g, '<br/>') : undefined;
+};
+
 const sendEmail = async ({ to, subject, text, html }) => {
-    if (!isConfigured || !transporter) {
-        logger.warn('Email service not configured, skipping email send');
-        return;
+    if (!isConfigured) {
+        const message = 'SendGrid email service is not configured. Set SENDGRID_API_KEY and EMAIL_FROM.';
+        logger.warn(message);
+        throw new Error(message);
     }
 
     try {
@@ -48,12 +41,12 @@ const sendEmail = async ({ to, subject, text, html }) => {
             to,
             subject,
             text,
-            html
+            html: html || formatHtml(text)
         };
 
-        const result = await transporter.sendMail(message);
-        logger.info('Email sent successfully', { to, subject });
-        return result;
+        const [response] = await sgMail.send(message);
+        logger.info('Email sent successfully', { to, subject, statusCode: response.statusCode });
+        return response;
     } catch (error) {
         logger.error('Failed to send email', { error: error.message, to, subject });
         throw error;
