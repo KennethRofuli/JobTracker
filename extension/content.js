@@ -100,6 +100,28 @@ function extractJobInfo() {
                document.querySelector('.JobDetails_location__mSg5h')?.innerText.trim() ||
                '';
   }
+
+  // Job Bank (Canada)
+  else if (url.includes('jobbank.gc.ca') || url.includes('jobbank.ca') || url.includes('sk.jobbank.gc.ca')) {
+    title = document.querySelector('h1')?.innerText.trim() ||
+            document.querySelector('[itemprop="title"]')?.innerText.trim() ||
+            '';
+
+    company = document.querySelector('a[href*="empprofile"]')?.innerText.trim() ||
+              document.querySelector('main h2')?.innerText.trim() ||
+              Array.from(document.querySelectorAll('h2, h3')).find(el => {
+                const text = el.innerText?.trim() || '';
+                return text.length > 2 && text.length < 120 &&
+                       !['Job details', 'Who can apply for this job?', 'Job market information'].includes(text);
+              })?.innerText.trim() ||
+              '';
+
+    location = Array.from(document.querySelectorAll('div, p, li, span')).find(el => {
+      const text = el.innerText?.trim() || '';
+      return /(^|\b)(Location|Work location)\b/i.test(text) && text.length < 150;
+    })?.innerText.replace(/^(?:Location|Work location)\s*/i, '').trim() ||
+               '';
+  }
   
   // OnlineJobs.ph
   else if (url.includes('onlinejobs.ph')) {
@@ -233,6 +255,7 @@ function getSource() {
   if (url.includes('linkedin.com')) return 'LinkedIn';
   if (url.includes('indeed.com')) return 'Indeed';
   if (url.includes('glassdoor.com')) return 'Glassdoor';
+  if (url.includes('jobbank.gc.ca') || url.includes('jobbank.ca') || url.includes('sk.jobbank.gc.ca')) return 'Job Bank';
   if (url.includes('onlinejobs.ph')) return 'OnlineJobs.ph';
   if (url.includes('jobright.ai')) return 'Jobright.ai';
   return 'Manual';

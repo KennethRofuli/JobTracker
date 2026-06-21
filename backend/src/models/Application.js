@@ -38,7 +38,7 @@ const applicationSchema = mongoose.Schema({
     },
     source: {
         type: String,
-        enum: ['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'OnlineJobs.ph', 'Jobright.ai'],
+        enum: ['Indeed', 'LinkedIn', 'Email', 'Manual', 'Glassdoor', 'Job Bank', 'OnlineJobs.ph', 'Jobright.ai'],
         default: 'Manual'
     },
     status:{

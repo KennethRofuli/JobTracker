@@ -30,7 +30,7 @@ A comprehensive MERN stack application that automatically tracks your job applic
 - **Duplicate Prevention**: Intelligent system prevents duplicate entries
 - **Quick Access**: Click company names to revisit job postings
 - **Location Tracking**: Automatically captures job location information
-- **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, OnlineJobs.ph, and Jobright.ai
+- **Multi-Site Support**: Works on Indeed, LinkedIn, Glassdoor, Job Bank, OnlineJobs.ph, and Jobright.ai
 - **Google OAuth**: Secure authentication with your Google account
 
 ## Tech Stack

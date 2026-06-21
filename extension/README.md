@@ -24,7 +24,7 @@
 ## 📋 How to Use
 
 ### Method 1: Auto-Capture
-1. Navigate to a job posting on LinkedIn, Indeed, Glassdoor, or Jobright.ai
+1. Navigate to a job posting on LinkedIn, Indeed, Glassdoor, Job Bank, or Jobright.ai
 2. Click the extension icon in your browser
 3. Click "🎯 Auto-Capture from Page"
 4. Review the captured data
@@ -67,6 +67,7 @@
 - LinkedIn Jobs
 - Indeed
 - Glassdoor
+- Job Bank
 - OnlineJobs.ph
 - Jobright.ai
 

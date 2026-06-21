@@ -25,6 +25,8 @@ function ApplicationTable({ applications, onDelete, onUpdateStatus, onUpdateNote
     const icons = {
       'LinkedIn': '💼',
       'Indeed': '🔍',
+      'Glassdoor': '🏢',
+      'Job Bank': '🇨🇦',
       'Email': '📧',
       'Manual': '✍️'
     };

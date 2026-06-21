@@ -341,7 +341,7 @@ function App() {
         <div className="info-banner">
           <div className="info-icon">ℹ️</div>
           <div className="info-content">
-            <strong>Browser Extension Required:</strong> To auto-capture jobs from Indeed, LinkedIn, and Glassdoor, 
+            <strong>Browser Extension Required:</strong> To auto-capture jobs from Indeed, LinkedIn, Glassdoor, and Job Bank, 
             you need to install the Job Tracker browser extension. 
             <a href="chrome://extensions/" className="info-link">Install Extension →</a>
           </div>
