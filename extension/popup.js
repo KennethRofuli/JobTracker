@@ -203,6 +203,55 @@ async function checkPageStatus() {
   }
 }
 
+async function tryFallbackExtraction(tabId) {
+  try {
+    const results = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        const cleanText = (value) => (value || '').replace(/\s+/g, ' ').trim();
+        const pick = (selectors) => {
+          for (const selector of selectors) {
+            const element = document.querySelector(selector);
+            const text = cleanText(element?.innerText || element?.textContent || '');
+            if (text) return text;
+          }
+          return '';
+        };
+
+        const company = pick([
+          'a[href*="empprofile"]',
+          '[data-test="employerName"]',
+          '[data-company-name="true"]',
+          '.jobsearch-CompanyInfoWithoutHeaderImage',
+          '[class*="company"]',
+          '.company-name'
+        ]);
+
+        const title = pick([
+          'h1',
+          '[itemprop="title"]',
+          '[data-testid="jobsearch-JobInfoHeader-title"]',
+          '[data-test="job-title"]',
+          '.job-title'
+        ]);
+
+        const location = pick([
+          '[data-testid="job-location"]',
+          '[data-test="location"]',
+          '[class*="location"]'
+        ]);
+
+        return { company, title, location };
+      }
+    });
+
+    return results?.[0]?.result || null;
+  } catch (error) {
+    console.error('Fallback extraction failed:', error);
+    return null;
+  }
+}
+
 // Auto-capture function (used by both buttons)
 async function performAutoCapture() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -241,9 +290,44 @@ async function performAutoCapture() {
   
   if (!result.success || chrome.runtime.lastError) {
     console.error('Extension error:', result.error || chrome.runtime.lastError);
+    const fallbackResult = await tryFallbackExtraction(tab.id);
+
+    if (fallbackResult && fallbackResult.company && fallbackResult.title) {
+      const response = fallbackResult;
+      if (response && response.company && response.title) {
+        document.getElementById('company').value = response.company;
+        document.getElementById('jobTitle').value = response.title;
+        
+        if (response.location) {
+          document.getElementById('location').value = response.location;
+        }
+        
+        document.getElementById('url').value = tab.url;
+        
+        if (tab.url.includes('linkedin.com')) {
+          document.getElementById('source').value = 'LinkedIn';
+        } else if (tab.url.includes('indeed.com')) {
+          document.getElementById('source').value = 'Indeed';
+        } else if (tab.url.includes('glassdoor.com')) {
+          document.getElementById('source').value = 'Glassdoor';
+        } else if (tab.url.includes('jobbank')) {
+          document.getElementById('source').value = 'Job Bank';
+        } else if (tab.url.includes('onlinejobs.ph')) {
+          document.getElementById('source').value = 'OnlineJobs.ph';
+        } else if (tab.url.includes('jobright.ai')) {
+          document.getElementById('source').value = 'Jobright.ai';
+        }
+        
+        showMessage('✅ Data captured! Review and click Save.', 'success');
+        document.getElementById('retryCapture').style.display = 'none';
+        document.getElementById('statusDot').className = 'status-dot active';
+        document.getElementById('statusText').textContent = 'Capture successful';
+        return;
+      }
+    }
+
     showMessage('❌ Content script not loaded. Please refresh the page (F5) first.', 'error');
     document.getElementById('retryCapture').style.display = 'block';
-    // Update status
     document.getElementById('statusDot').className = 'status-dot inactive';
     document.getElementById('statusText').textContent = 'Page needs refresh (F5)';
     return;
