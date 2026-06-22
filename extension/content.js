@@ -102,7 +102,7 @@ function extractJobInfo() {
   }
 
   // Job Bank (Canada)
-  else if (url.includes('jobbank.gc.ca') || url.includes('jobbank.ca') || url.includes('sk.jobbank.gc.ca')) {
+  else if (url.includes('jobbank')) {
     title = document.querySelector('h1')?.innerText.trim() ||
             document.querySelector('[itemprop="title"]')?.innerText.trim() ||
             '';
@@ -255,7 +255,7 @@ function getSource() {
   if (url.includes('linkedin.com')) return 'LinkedIn';
   if (url.includes('indeed.com')) return 'Indeed';
   if (url.includes('glassdoor.com')) return 'Glassdoor';
-  if (url.includes('jobbank.gc.ca') || url.includes('jobbank.ca') || url.includes('sk.jobbank.gc.ca')) return 'Job Bank';
+  if (url.includes('jobbank')) return 'Job Bank';
   if (url.includes('onlinejobs.ph')) return 'OnlineJobs.ph';
   if (url.includes('jobright.ai')) return 'Jobright.ai';
   return 'Manual';
